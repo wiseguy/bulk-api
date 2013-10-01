@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Web Map Template">
+    <meta name="author" content="Robert Winterbottom">
+    <meta name="keywords" content="Map">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <title>FORMA Download</title>
+
+    <script type="text/javascript" src="//use.typekit.net/gua1sca.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script> 
+
+    <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8/dojox/form/resources/RangeSlider.css" />
+    <link rel="stylesheet" href="app/css/main.css">
+
+    
+
+    <script>
+        var dojoConfig = {
+            parseOnLoad: false,
+            isDebug: false,
+            async: true,
+            packages: [
+                {name: "app", location: location.pathname.replace(/\/[^/]+$/,"") + "/app/js/main"}
+            ]
+        }
+    </script>
+    <script type="text/javascript" src="http://js.arcgis.com/3.5compact"></script>
+    <!--http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.5compact-->
+    <script>
+        require(["dojo/parser","app/main","dijit/layout/BorderContainer","dijit/layout/ContentPane","dijit/form/Button","dijit/form/FilteringSelect","dojo/domReady!"],
+                function(parser,Main,BorderContainer,ContentPane,Button,FilteringSelect){
+                  parser.parse();
+                  Main.initialize();
+        });
+    </script>
+</head>
+<body class="tundra app">
+<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="parseOnLoad:false,gutters:false,design:'headline'" id="MainBorderContainer">
+    
+    
+    <div id="LeftPanel" dojoType="dijit.layout.ContentPane" splitter="false" region="left">
+
+        <a id="gfw2link" href ="http://www.wri.org/gfw2"><img class="logo" src="app/images/logo.png" /></a>
+        <div class="container" id ="infoText"><p>Forest Monitoring for Action<br/> Data Download Tool</p></div>
+        
+        <div id="mainForm" class="container">
+            <div class="formSteps">1. Choose a start and end date.</div>
+             
+            <div class="container" id="dateContainerTitle">
+                
+                <span>Year </span>
+                <span style="margin:0px 20px">&nbsp;</span>
+                <span>Date</span>
+                
+            </div>
+            
+            <div class="container" id="dateContainer">                
+                <div id="startSelect"></div>
+                <div id="startYear"></div>
+                <label for="dateSlider"><strong>Start Date :</strong> </label><div id="dateSlider"></div>
+            </div>
+            <div class="container" id="endContainerTitle">
+                
+                <span>Year </span>
+                <span style="margin:0px 20px">&nbsp;</span>
+                <span>Date</span>
+                
+            </div>
+            <div class="container" id="endContainer">
+                
+                <div id="endSelect"></div>
+                <div id="endYear"></div>
+                <label for="endDate"><strong>End Date :</strong> </label><div id="endDate"></div>
+            </div>
+            <div class="formSteps">2. Choose probability range </div>
+            <div class="container" id="probContainer"><div id="probSlider"></div></div>
+
+            <div class="formSteps">3. Select Country then States/Provinces (up to 5) - using the dropdowns or map.</div>
+
+            <div class="container" id="selectSection"></div>
+              
+              <div class="container" id ="countryContainer">
+              
+                  <label  for="countrySelect"><strong>Country :</strong></label>
+                  <div id="countrySelect"></div>
+              </div>
+              <div class="container"  id ="stateContainer" data-bind="visible:  currentCountrySelected()" }>
+                  <label  for="stateSelect"><strong>State/Province :</strong></label>
+                  <div id="stateSelect"></div>
+
+                  <div id="selectedStates" data-bind="foreach:currentRegionsGraphics()">
+                    <span data-bind="css:{selectedRegionTagInactive: ($index()>=5),selectedRegionTag: ($index()<5)}">
+                    <span data-bind="html:attributes.NAME_1,event:{mouseover:$parent.mouseOverRegion,mouseout:$parent.mouseOutRegion}"></span>
+                    <span class="tagRemove" data-bind="click:$parent.selectedRegionClick">X</span>                                      
+                    </span>
+                    <span>&nbsp;</span>  
+                  </div>
+
+              </div>
+              <div class="formSteps" data-bind="css:{dijitHidden:currentRegionsGraphics().length==0}">4. Download FORMA data.</div>
+              <div class="container"  id ="downloadContainer" data-bind="css:{dijitHidden:currentRegionsGraphics().length==0}">
+                  <label  for="downloadSelect"><strong>Export Format:</strong></label>
+                  <div  id="downloadSelect"></div>
+                  <div>
+                  <br>
+                  <label  for="emailAddress"><strong>Email address:</strong></label>
+                  <div dojoType="dijit/form/TextBox" id="emailAddress"></div>
+                  </div>
+
+              </div>
+
+             <div class="container" id="downloadResultsContainer">
+                 <div id="downloadImg" class="dijitHidden"><img src="app/images/downloading.gif"/></div>   
+                 <div id="resultsMessage"></div>
+             </div>
+             <div class="container" id="downloadButtonContainer" data-bind="css:{dijitHidden:currentRegionsGraphics().length==0}">
+                    <button id="downloadButton" >GO</button>
+             </div>
+        </div>
+    </div>
+    <div id="CenterPanel" dojoType="dijit.layout.ContentPane" splitter="true" region="center">
+        <div id='map'>
+        </div>
+    </div>
+</div>
+</body>
+</html>
