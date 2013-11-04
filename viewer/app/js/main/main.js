@@ -4,10 +4,14 @@ define([
     "app/knockout230",
     //"app/viewModel",
     "dojo/_base/array",
-    "esri/map",
+    "esri/map",    
     "esri/layers/ArcGISDynamicMapServiceLayer",
+    "esri/layers/ArcGISTiledMapServiceLayer",
     "esri/layers/FeatureLayer",
     "esri/layers/GraphicsLayer",
+    "esri/dijit/BasemapGallery",
+    "esri/dijit/BasemapLayer",
+    "esri/dijit/Basemap",
     "esri/graphic",
     "esri/tasks/QueryTask",
     "esri/tasks/query",
@@ -26,7 +30,7 @@ define([
     "dojo/store/Memory",
     "dijit/form/FilteringSelect",
     "dijit/form/ComboBox",
-    "dijit/form/TextBox",
+    "dijit/form/TextBox",    
     "dojox/validate/web",
     "dojox/data/CsvStore",
     "dojo/io-query",
@@ -35,27 +39,16 @@ define([
     "esri/request"
     
     ],
-    function (config, dates, ko, array, Map, ArcGISDynamicMapServiceLayer, FeatureLayer, GraphicsLayer, Graphic, QueryTask, query, SimpleFillSymbol, SimpleLineSymbol,
-       webMercatorUtils,Color, parser, registry, dom, on, Button, BorderContainer, Attribution, utils, Memory, FilteringSelect, 
-       ComboBox ,TextBox, validate, CsvStore, ioQuery, domConstruct, SimpleRenderer,esriRequest) {
+    function (config, dates, ko, array, Map, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, GraphicsLayer, 
+        BasemapGallery, BasemapLayer, Basemap, Graphic, QueryTask, query, SimpleFillSymbol, SimpleLineSymbol,
+        webMercatorUtils,Color, parser, registry, dom, on, Button, BorderContainer, Attribution, utils, Memory, FilteringSelect, 
+        ComboBox ,TextBox, validate, CsvStore, ioQuery, domConstruct, SimpleRenderer,esriRequest) {
 
         return {
             config: config,
             initialize: function() {
 
-                esriRequest.setRequestPreCallback(function(ioArgs){
 
-                    // inspect ioArgs
-                    console.log(ioArgs.url, ioArgs.content);
-
-                    // or, change some query parameters if necessary
-                    ioArgs.content = ioArgs.content || {};
-                    ioArgs.content.random = Math.random();
-
-                    // don't forget to return ioArgs.
-                    return ioArgs;
-
-                });
 
 
                 var _self = this;
@@ -63,20 +56,66 @@ define([
                 console.log("Main.initialize");
 
                 _self.map = new Map("map",{
-                    basemap: "gray",
+                    basemap: "topo",
                     center: [0,0],
                     zoom: 3,
+                    maxZoom: 14,
+                    minZoom: 2,
                     sliderStyle: "small"
                 });
 
+                //add default basemap
+                var basemap = new ArcGISTiledMapServiceLayer(config.basemap);
+                _self.map.addLayer(basemap);
+
+                //add Basemap Selector
+                var basemapGallery = new BasemapGallery({
+                    showArcGISBasemaps: true,
+                    map: _self.map
+                }, "basemapGallery");
+
+
+
+                var customBasemapLayer = new BasemapLayer({
+                    url:config.basemap
+                    ,isReference:false
+                })
+                var customBasemapRefLayer = new BasemapLayer({
+                    url:config.basemapReference
+                    ,isReference:true
+                })
+
+                var customBasemap = new Basemap({
+                    layers: [customBasemapLayer,customBasemapRefLayer],
+                    title: "Shaded Relief",
+                    thumbnailUrl:"app/images/shadedRelief.png",
+                    id:"basemap_default"
+                });
+
+                basemapGallery.add(customBasemap);
+                basemapGallery.startup();
+
+                basemapGallery.select("basemap_default");
+
+                basemapGallery.on("selection-change", function() {
+                  // remove all basemap layers                                    
+                  array.forEach(_self.map.basemapLayerIds, function(bid) {
+                    var l = _self.map.getLayer(bid);
+                    if ( l ) {
+                        _self.map.removeLayer(l);
+                    }
+                })
+                  
+              })
+
                 var sfs = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
-                            new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
-                            new Color([130,130,130]), 2),new Color([255,0,0,0.25])
-                          ); 
-                 var sfsHighlight = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
-                            new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
-                            new Color([130,130,130]), 2),new Color([255,0,0,0.5])
-                          ); 
+                    new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
+                        new Color([130,130,130]), 2),new Color([255,0,0,0.25])
+                    ); 
+                var sfsHighlight = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+                    new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
+                        new Color([130,130,130]), 2),new Color([255,0,0,0.5])
+                    ); 
                 var countrySelectRender = new SimpleRenderer(sfs);
                 var regionsSelectRender = new SimpleRenderer(sfs);
                 var regionsHighlightRender = new SimpleRenderer(sfsHighlight);
@@ -84,12 +123,12 @@ define([
                 on(_self.map,"load",function(){
                     _self.GadmMap = new ArcGISDynamicMapServiceLayer(config.mapservice.url,config.mapservice.options);
                     _self.formaPoints = new ArcGISDynamicMapServiceLayer(config.formaPoints.url,config.formaPoints.options);
-                    _self.CountryLayer = new FeatureLayer(config.countries.url, { mode: FeatureLayer.MODE_SELECTION, maxAllowableOffset: 400 });
+                    _self.CountryLayer = new FeatureLayer(config.countries.url, { mode: FeatureLayer.MODE_SELECTION, maxAllowableOffset: 2000 });
                     //_self.CountryLayer.setDefinitionExpression("ISO3='NONE'");
                     _self.CountryLayer.setOpacity(0.7);
                     _self.CountryLayer.setRenderer(countrySelectRender);
                     
-                    _self.RegionLayer = new FeatureLayer(config.gadm.url, { mode: FeatureLayer.MODE_SELECTION, maxAllowableOffset: 200, outFields:[config.gadm.namefield01,config.gadm.idForADM2] });
+                    _self.RegionLayer = new FeatureLayer(config.gadm.url, { mode: FeatureLayer.MODE_SELECTION, maxAllowableOffset: 500, outFields:[config.gadm.namefield01,config.gadm.idForADM2] });
                     _self.RegionLayer.setRenderer(regionsSelectRender);
                     _self.RegionHighLightLayer = new GraphicsLayer();
                     _self.RegionHighLightLayer.setRenderer(regionsHighlightRender);
@@ -101,11 +140,13 @@ define([
                     //_self.CountryLayer.setRenderer(selectionSymbol);
                     console.log(_self.CountryLayer.renderer);
                     _self.RegionLayer.setSelectionSymbol(selectionSymbol);
+                    var basemapReference = new ArcGISTiledMapServiceLayer(config.basemapReference);
                     _self.map.addLayers([_self.GadmMap,
-                                        _self.formaPoints,
-                                        _self.CountryLayer, 
-                                        _self.RegionLayer,
-                                        _self.RegionHighLightLayer]);
+                        _self.formaPoints,
+                        _self.CountryLayer, 
+                        _self.RegionLayer,
+                        _self.RegionHighLightLayer
+                        ]);
 
                     on(_self.map,"layers-add-result",function(){
                         _self.CountryLayer.enableMouseEvents();
@@ -133,7 +174,7 @@ define([
                             return true;
                         }
                         this.mouseOverRegion = function(data, event){
-                            
+
                             //var graphic = data;
                             var geometry = data.geometry;
                             var graphic = new Graphic(geometry,null,null,null);
@@ -142,16 +183,31 @@ define([
                             return true;
                         }
                         this.mouseOutRegion = function(data, event){    
-                        
+
                             _self.RegionHighLightLayer.clear();                                                   
                             return true;
                         }
 
                     }
-                    
-                    
-                    
-                    
+
+
+                //     esriRequest.setRequestPreCallback(function(ioArgs){
+
+                //     // inspect ioArgs
+                //     console.log(ioArgs.url, ioArgs.content);
+
+                //     // or, change some query parameters if necessary
+                //     ioArgs.content = ioArgs.content || {};
+                //     ioArgs.content.random = Math.random();
+
+                //     // don't forget to return ioArgs.
+                //     return ioArgs;
+
+                // });
+
+
+
+
                     //alert(KOModel);
                     var vm = new viewModel();
                     //alert(vm.currentCountrySelected());
@@ -163,21 +219,21 @@ define([
 
                 })
 
-                
-            },
+
+},
 
 
-            firstMapClick: function () {
-                console.log("firstMapClick")
-                var _self = this;
-                _self.mapClickHandle = _self.map.on("click", function (evt) {
-                    
-                    console.log(evt);
-                    var regTask = new QueryTask(config.countries.url);
-                    var cQuery = new query();
-                    cQuery.returnGeometry = false;
-                    cQuery.geometry = evt.mapPoint;
-                    cQuery.outFields = [config.countries.idfield];
+firstMapClick: function () {
+    console.log("firstMapClick")
+    var _self = this;
+    _self.mapClickHandle = _self.map.on("click", function (evt) {
+
+        console.log(evt);
+        var regTask = new QueryTask(config.countries.url);
+        var cQuery = new query();
+        cQuery.returnGeometry = false;
+        cQuery.geometry = evt.mapPoint;
+        cQuery.outFields = [config.countries.idfield];
                     //cQuery.outFields = ["*"];
 
                     regTask.execute(cQuery, function (results) {
@@ -200,20 +256,20 @@ define([
                         }
                     });
                 });
-            },
+},
 
-            initSliders: function () {
-                var _self = this;
-                require(["dojo/ready", 'dojox/form/RangeSlider', "dijit/form/HorizontalSlider", "dijit/form/HorizontalRuleLabels",
-                    "dijit/form/HorizontalRule"],
-                    function(ready,RangeSlider,HorizontalSlider,HorizontalRuleLabels,HorizontalRule){
-                    
-                        var probrulesNode = domConstruct.create("div", {}, dom.byId("probSlider"), "first");
-                        var probsliderRules = new HorizontalRule({
-                            container: "bottomDecoration",
-                            count: 10,
-                            ruleStyle: "width: 5px;"
-                        }, probrulesNode);
+initSliders: function () {
+    var _self = this;
+    require(["dojo/ready", 'dojox/form/RangeSlider', "dijit/form/HorizontalSlider", "dijit/form/HorizontalRuleLabels",
+        "dijit/form/HorizontalRule"],
+        function(ready,RangeSlider,HorizontalSlider,HorizontalRuleLabels,HorizontalRule){
+
+            var probrulesNode = domConstruct.create("div", {}, dom.byId("probSlider"), "first");
+            var probsliderRules = new HorizontalRule({
+                container: "bottomDecoration",
+                count: 10,
+                ruleStyle: "width: 5px;"
+            }, probrulesNode);
 
                         // Create the labels
                         var problabelsNode = domConstruct.create("div", {}, dom.byId("probSlider"), "first");
@@ -232,7 +288,7 @@ define([
                             discreteValues: 9,
                             showButtons: false, 
                             "class":"sliderClass"
-                        
+
                         }, "probSlider");
 
                         // Start up the widget
@@ -277,107 +333,107 @@ define([
                         _self.initSliderHandlers();
                         _self.dateSelects();
                     });
-            },
+},
 
-            initSelects: function () {
-                console.log("initSelects");
-                var _self = this;
-                require(["dojo/ready", "app/config","dojo/_base/lang", "dojo/store/Memory",
-                     "dojo/_base/array"],
-                    function (ready, config, lang,Memory, array) {
-                    
-                        var queryCountries = new QueryTask(config.countries.url);
-                    
-                        var gadmQuery= new query();
-                        gadmQuery.returnGeometry = false;
-                        gadmQuery.outFields = ["NAME_ENGLI","ID_0","ISO3"];
-                        gadmQuery.where = "1=1";
-                        queryCountries.execute(gadmQuery,function(results)    {
-                            console.log("Got Countries");
-                            var feats = results.features;
-                        
+initSelects: function () {
+    console.log("initSelects");
+    var _self = this;
+    require(["dojo/ready", "app/config","dojo/_base/lang", "dojo/store/Memory",
+     "dojo/_base/array"],
+     function (ready, config, lang,Memory, array) {
+
+        var queryCountries = new QueryTask(config.countries.url);
+
+        var gadmQuery= new query();
+        gadmQuery.returnGeometry = false;
+        gadmQuery.outFields = ["NAME_ENGLI","ID_0","ISO3"];
+        gadmQuery.where = "1=1";
+        queryCountries.execute(gadmQuery,function(results)    {
+            console.log("Got Countries");
+            var feats = results.features;
+
                            // var countryNames = [{ name: "Select Country", id: 9999 }];
-                            var countryNames = [];
-                            array.forEach(feats,function(feat){
-                                featRow = {name:feat.attributes["NAME_ENGLI"],id:feat.attributes["ISO3"]};
-                                countryNames.push(featRow);
+                           var countryNames = [];
+                           array.forEach(feats,function(feat){
+                            featRow = {name:feat.attributes["NAME_ENGLI"],id:feat.attributes["ISO3"]};
+                            countryNames.push(featRow);
 
-                            });
-                            var countryStore = new Memory({
-                                data: countryNames
-                            })
-                            _self.countrySelect = new FilteringSelect({
-                                id: "countrySelect",
-                                name: "Country",
-                                searchAttr: "name",
-                                queryExpr: "*${0}*",
-                                autoComplete: false,
-                                trim: "true",
+                        });
+                           var countryStore = new Memory({
+                            data: countryNames
+                        })
+                           _self.countrySelect = new FilteringSelect({
+                            id: "countrySelect",
+                            name: "Country",
+                            searchAttr: "name",
+                            queryExpr: "*${0}*",
+                            autoComplete: false,
+                            trim: "true",
                                 ///value: 9999,
                                 store: countryStore
                             },dojo.byId('countrySelect'));
 
                            // config.states[0]={name:"-",id:9999}
-                            var stateStore = new Memory({
-                                data: config.states
-                            })
+                           var stateStore = new Memory({
+                            data: config.states
+                        })
 
-                            _self.stateSelect = new FilteringSelect({
-                                id: "stateSelect",
-                                name: "State",
-                                autoComplete: false,
-                                searchAttr: "name",
-                                queryExpr: "*${0}*",
-                                trim: "true",
-                                store: stateStore
-                            },dojo.byId('stateSelect'));
-
-
-                            _self.initSelectHandlers();
-                        });
-                    })
-            },
-
-            initDownloader: function () {
-                console.log("initDownloader");
-                var dlStore = new Memory({
-                    data: config.downloads
-                });
-                var _self = this;
-                _self.downloadSelect = new FilteringSelect({
-                    id: "downloadSelect",
-                    name: "Download",
-                    value: "CSV",
-                    queryExpr: "*${0}*",
-                    autoComplete: false,
-                    store: dlStore,
-                    searchAttr: "name"
-                }, dojo.byId("downloadSelect"));
-
-                _self.downloadButton = new Button({
-                    label: "Download ▼",
-                    "class":"downloadButton"
-                }, "downloadButton");
-                _self.initDownloaderHandlers();
-            },
+                           _self.stateSelect = new FilteringSelect({
+                            id: "stateSelect",
+                            name: "State",
+                            autoComplete: false,
+                            searchAttr: "name",
+                            queryExpr: "*${0}*",
+                            trim: "true",
+                            store: stateStore
+                        },dojo.byId('stateSelect'));
 
 
-            initSliderHandlers: function () {
-                console.log("initSliderHandlers");
-                var _self = this;
+                           _self.initSelectHandlers();
+                       });
+})
+},
+
+initDownloader: function () {
+    console.log("initDownloader");
+    var dlStore = new Memory({
+        data: config.downloads
+    });
+    var _self = this;
+    _self.downloadSelect = new FilteringSelect({
+        id: "downloadSelect",
+        name: "Download",
+        value: "CSV",
+        queryExpr: "*${0}*",
+        autoComplete: false,
+        store: dlStore,
+        searchAttr: "name"
+    }, dojo.byId("downloadSelect"));
+
+    _self.downloadButton = new Button({
+        label: "Download ▼",
+        "class":"downloadButton"
+    }, "downloadButton");
+    _self.initDownloaderHandlers();
+},
+
+
+initSliderHandlers: function () {
+    console.log("initSliderHandlers");
+    var _self = this;
                 //_self.dateSliderChange = _self.dateSlider.on("change", function (value) {
                 //    console.log("date: " + value.toString());
                 //});
 
-                _self.probSliderChange = _self.probSlider.on("change", function (value) {
-                    console.log( "prob: "+ value.toString());
-                });
-            },
+_self.probSliderChange = _self.probSlider.on("change", function (value) {
+    console.log( "prob: "+ value.toString());
+});
+},
 
-            initSelectHandlers: function () {
-                var _self = this;
-                _self.countrySelectChange = _self.countrySelect.on("change", function (value) {
-                    if (value){
+initSelectHandlers: function () {
+    var _self = this;
+    _self.countrySelectChange = _self.countrySelect.on("change", function (value) {
+        if (value){
                         //alert("country " + value);
                         countryChange(value);
                     }
@@ -418,13 +474,13 @@ define([
                         })
 
                        // _self.CountryLayer.setDefinitionExpression(config.countries.idfield + " = '" + value + "'");
-                        var countryQuery = new query();
-                        countryQuery.where = config.countries.idfield + " = '" + value + "'";
-                        _self.CountryLayer.selectFeatures(countryQuery,FeatureLayer.SELECTION_NEW,function(features,method){
-                                if (features.length>0){
-                                    _self.map.setExtent(features[0]._extent,true);
-                                }
-                        })
+                       var countryQuery = new query();
+                       countryQuery.where = config.countries.idfield + " = '" + value + "'";
+                       _self.CountryLayer.selectFeatures(countryQuery,FeatureLayer.SELECTION_NEW,function(features,method){
+                        if (features.length>0){
+                            _self.map.setExtent(features[0]._extent,true);
+                        }
+                    })
 
                         //_self.RegionLayer.setDefinitionExpression(config.gadm.joinfield + " = 'NONE'");
 
@@ -432,7 +488,7 @@ define([
                         statesQuery.where = config.gadm.joinfield + " = 'NONE'";
                         _self.RegionLayer.selectFeatures(statesQuery,FeatureLayer.SELECTION_NEW,function(features,method){
                             config.viewModel.currentRegionsGraphics(_self.RegionLayer.graphics);
-                                
+
                         })
 
                         //var layerDefinitions = [];
@@ -457,11 +513,11 @@ define([
                     }
                 });
 
-                _self.regionDefinition = "";
-                _self.stateSelect.on("change", function (value) {
-                    
+_self.regionDefinition = "";
+_self.stateSelect.on("change", function (value) {
 
-                    if (value) {
+
+    if (value) {
                         //alert("state " + value);
                         _self.setRegionDefinition(value);
                     }
@@ -473,26 +529,26 @@ define([
                     //     var statesQuery = new query();
                     //     statesQuery.where = config.gadm.joinfield + " = '" + value + "'";
                     //     _self.RegionLayer.selectFeatures(statesQuery,FeatureLayer.SELECTION_NEW,function(features,method){
-                                
+
                     //     })
 
 
                     // }
                     // else {
                     //     _self.setRegionDefinition(value);
-                        
+
                     //     console.log("called reg def");
                     // }
                 });
-            },
+},
 
-            setRegionDefinition: function (value) {
-                var _self = this;
-                var curCountry = _self.countrySelect.get("value");
+setRegionDefinition: function (value) {
+    var _self = this;
+    var curCountry = _self.countrySelect.get("value");
 
                 //get id's from current region graphics and add the new value in the list
                 var idList = array.map(_self.RegionLayer.graphics,function(g){
-                        return g.attributes[config.gadm.idfield]
+                    return g.attributes[config.gadm.idfield]
                 });
                 idList.push(value);
 
@@ -509,7 +565,7 @@ define([
                 //     var statesQuery = new query();
                 //     statesQuery.where = "ISO3='NONE'";
                 //     _self.RegionLayer.selectFeatures(statesQuery,FeatureLayer.SELECTION_NEW,function(features,method){
-                            
+
                 //     })
                 //     return;
                 // }
@@ -529,7 +585,7 @@ define([
                 statesQuery.where = where;
                 _self.RegionLayer.selectFeatures(statesQuery,FeatureLayer.SELECTION_NEW,function(features,method){
                     config.viewModel.currentRegionsGraphics(_self.RegionLayer.graphics);
-                        
+
                 })
             },
 
@@ -567,29 +623,29 @@ define([
                         });
                     });
 
-                    
+
 
                     //Remove State, since the click was on State
                     _self.RegionLayer.on("click", function (evt) {                        
                         var regTask = new QueryTask(config.gadm.url);
                         var regQuery = new query();
                        // regQuery.returnGeometry = false;
-                        regQuery.geometry = evt.mapPoint;
+                       regQuery.geometry = evt.mapPoint;
                        // regQuery.outFields = ["*"];
-                        console.log(regQuery.where);
+                       console.log(regQuery.where);
 
-                        regTask.executeForIds(regQuery, function (results) {
-                            console.log(results);
-                            array.some(_self.RegionLayer.graphics,function(g){
-                                var same = (results[0]==g.attributes.OBJECTID);
-                                if (same) {
-                                    _self.RegionLayer.remove(g);
-                                     config.viewModel.currentRegionsGraphics(_self.RegionLayer.graphics);
-                                    
-                                }
-                                return same;
+                       regTask.executeForIds(regQuery, function (results) {
+                        console.log(results);
+                        array.some(_self.RegionLayer.graphics,function(g){
+                            var same = (results[0]==g.attributes.OBJECTID);
+                            if (same) {
+                                _self.RegionLayer.remove(g);
+                                config.viewModel.currentRegionsGraphics(_self.RegionLayer.graphics);
 
-                            })
+                            }
+                            return same;
+
+                        })
 
                             // //_self.regionIDarray.push(results[0]);
                             // var curStateval = _self.stateSelect.get("value");
@@ -599,72 +655,72 @@ define([
                             // }
                             // _self.stateSelect.set("value",results[0]);
                         });
-                    });
-                });
-                
+});
+});
 
-            },
 
-            initDownloaderHandlers: function () {
-                var _self = this;
-                _self.downloadButtonClick = _self.downloadButton.on("click", function (value) {
-                    console.log("Download clicked");
-                    _self.getDownloadLink(value);
-                });
+},
 
-                _self.downloadSelectChange = _self.downloadSelect.on("change", function (value) {
-                    console.log(value);
-                });
+initDownloaderHandlers: function () {
+    var _self = this;
+    _self.downloadButtonClick = _self.downloadButton.on("click", function (value) {
+        console.log("Download clicked");
+        _self.getDownloadLink(value);
+    });
 
-                
-            },
+    _self.downloadSelectChange = _self.downloadSelect.on("change", function (value) {
+        console.log(value);
+    });
 
-            dateSelects: function(){
-                var _self = this;
-                var csv =  new CsvStore({
-                    url: "http://localhost:51362/forma/app/csv/dates.csv"
-                });
 
-                console.log(csv);
-                
+},
 
-                var datesStore = new Memory({
-                    data: dates.dates
-                });
-                var startNames = [];
-                var endNames = [];
-                datesStore.query({ year: dates.defaultStartYear }).forEach(function (feat) {
-                    featRow = { name: feat.name, id: feat.id };
-                    startNames.push(featRow);
-                });
-                datesStore.query({ year: dates.defaultEndYear }).forEach(function (feat) {
-                    featRow = { name: feat.name, id: feat.id };
-                    endNames.push(featRow);
-                });
+dateSelects: function(){
+    var _self = this;
+    var csv =  new CsvStore({
+        url: "http://localhost:51362/forma/app/csv/dates.csv"
+    });
 
-                var startStore = new Memory({ data: startNames });
-                var endStore = new Memory({ data: endNames });
-                var styearStore = new Memory({ data: dates.years });
-                var endyearStore = new Memory({ data: dates.years });
-                
-                var startYearContainer = domConstruct.create("div",null,dojo.byId('startYear'));
-                _self.startYear = new FilteringSelect({
-                    id: "startYear",
-                    
-                    searchAttr: "name",
-                    value: 0,
-                    "class":"datesFilter",
-                    store: styearStore
-                }, startYearContainer);
-                var startSelectContainer = domConstruct.create("div",null,dojo.byId('startSelect'));
-                _self.startSelect = new FilteringSelect({
-                    id: "startSelect",
-                    
-                    searchAttr: "name",
-                    value: dates.defaultStartDate,
-                    "class":"datesFilter",
-                    store: startStore
-                }, startSelectContainer);
+    console.log(csv);
+
+
+    var datesStore = new Memory({
+        data: dates.dates
+    });
+    var startNames = [];
+    var endNames = [];
+    datesStore.query({ year: dates.defaultStartYear }).forEach(function (feat) {
+        featRow = { name: feat.name, id: feat.id };
+        startNames.push(featRow);
+    });
+    datesStore.query({ year: dates.defaultEndYear }).forEach(function (feat) {
+        featRow = { name: feat.name, id: feat.id };
+        endNames.push(featRow);
+    });
+
+    var startStore = new Memory({ data: startNames });
+    var endStore = new Memory({ data: endNames });
+    var styearStore = new Memory({ data: dates.years });
+    var endyearStore = new Memory({ data: dates.years });
+
+    var startYearContainer = domConstruct.create("div",null,dojo.byId('startYear'));
+    _self.startYear = new FilteringSelect({
+        id: "startYear",
+
+        searchAttr: "name",
+        value: 0,
+        "class":"datesFilter",
+        store: styearStore
+    }, startYearContainer);
+    var startSelectContainer = domConstruct.create("div",null,dojo.byId('startSelect'));
+    _self.startSelect = new FilteringSelect({
+        id: "startSelect",
+
+        searchAttr: "name",
+        value: dates.defaultStartDate,
+        "class":"datesFilter",
+        store: startStore
+    }, startSelectContainer);
 
                 //set defaults
                 _self.startYear.set('value', dates.defaultStartYear);
@@ -700,7 +756,7 @@ define([
                     // _self.endYear.set('value', endYears[0]['id']);
                    // updateEndDate(curYear);
 
-                });
+               });
 
                 
 
@@ -729,10 +785,10 @@ define([
                  //_self.endYear.set('value', dates.defaultEndYear);
                  _self.endSelect.set('value', dates.defaultEndDate);
 
-                _self.endYear.on("change", updateEndDate);
-                
-                function updateEndDate(value) {
-                    
+                 _self.endYear.on("change", updateEndDate);
+
+                 function updateEndDate(value) {
+
                     var curEndID = _self.endSelect.get("value");
                     
 
@@ -753,7 +809,7 @@ define([
                     var endStore = new Memory({ data: endNames });
                     _self.endSelect.set('store', endStore);
 
-                
+
                     _self.endSelect.set('value', endNames[0]['id']);
 
                 }
@@ -772,9 +828,9 @@ define([
                 //    store: endStore
                 //}, dojo.byId('endSelect'));
 
-            },
+},
 
-            getDownloadLink: function (value) {
+getDownloadLink: function (value) {
 
                 //first query gadm2 for gadm1 IDS
                 dojo.byId("resultsMessage").innerHTML = "";    
@@ -829,7 +885,7 @@ define([
                         var endDateIndex = _self.endSelect.get("value");//yearBreaks[dates[0]][0];
                         var dateCount =  endDateIndex - startDateIndex + 1;//yearBreaks[dates[1]][1];
 
-                        var downloadURL = "http://alb:8080/forma/download";
+                        var downloadURL = config.downloadApiURL;
                         var query = {
                             country: country,
                             minProb: probs[0],
@@ -870,46 +926,46 @@ define([
                          load: function(data){
                            // Set the data from the search into the viewbox in nicely formatted JSON
                            //targetNode.innerHTML = "<pre>" + dojo.toJson(data, true) + "</pre>";
-                            if (data.featureCount>0){
-                                dojo.byId("resultsMessage").innerHTML = "<a href='"+data.results+"' target='_blank'>Download Zip</a>";    
-                            } else {
-                                dojo.byId("resultsMessage").innerHTML = "No data found";    
-                            }
-                            
-                           dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
-                         },
-                         error: function(error){
+                           if (data.featureCount>0){
+                            dojo.byId("resultsMessage").innerHTML = "<a href='"+data.results+"' target='_blank'>Download Zip</a>";    
+                        } else {
+                            dojo.byId("resultsMessage").innerHTML = "No data found";    
+                        }
+
+                        dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
+                    },
+                    error: function(error){
                            //targetNode.innerHTML = "An unexpected error occurred: " + error;
                            dojo.byId("resultsMessage").innerHTML = "Error in download";
                            dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
-                         }
-                        };
-                        dojo.io.script.get(jsonpArgs);
-
-
-                 
-                    })
-
-                 })
-                 
-               
-                return;
+                       }
+                   };
+                   dojo.io.script.get(jsonpArgs);
 
 
 
-                
+               })
 
-               
-            },
+})
 
-            showLoadingIcon: function(Id,Container) {
-                require(["dojo/dom-style"],function(domStyle){
-                    var top = ((domStyle.get(Container,"height") / 2) - 24)+"px";
-                    var right = ((domStyle.get(Container,"width") / 2) - 24)+"px";
-                    domStyle.set(Id,"top",top);
-                    domStyle.set(Id,"right",right);
-                    domStyle.set(Id,"visibility","visible");
-                });
+
+return;
+
+
+
+
+
+
+},
+
+showLoadingIcon: function(Id,Container) {
+    require(["dojo/dom-style"],function(domStyle){
+        var top = ((domStyle.get(Container,"height") / 2) - 24)+"px";
+        var right = ((domStyle.get(Container,"width") / 2) - 24)+"px";
+        domStyle.set(Id,"top",top);
+        domStyle.set(Id,"right",right);
+        domStyle.set(Id,"visibility","visible");
+    });
             }, // End Show Loading Icon
 
             hideLoadingIcon: function(Id) {

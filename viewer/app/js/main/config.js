@@ -1,4 +1,6 @@
 define({
+    basemap:"http://services.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer",
+    basemapReference:"http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer",
     mapservice:{url:"http://ags101.blueraster.net/arcgis/rest/services/gadm/Gadm/MapServer/",options:{opacity:0.4}},
     gadm2: {url:"http://ags101.blueraster.net/arcgis/rest/services/gadm/Gadm/MapServer/2",outFields:["ADMIN_REGION"],idField:"ADMIN_REGION"},
     gadm: { url: "http://ags101.blueraster.net/arcgis/rest/services/gadm/Gadm/MapServer/0", // GADM 1
@@ -9,6 +11,7 @@ define({
             idForADM2:"ID_1",
             namefield01:"NAME_1" //State Names 
         },
+    downloadApiURL:"http://alb:8080/forma-download/api",
     countries: {url: "http://ags101.blueraster.net/arcgis/rest/services/gadm/Gadm/MapServer/1",
                 namefield:"NAME__0",
                 idfield:"ISO3"},

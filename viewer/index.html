@@ -10,17 +10,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-    <title>FORMA Download</title>
+    <title>Forest Monitoring for Action (FORMA) Data Download Tool</title>
 
     <script type="text/javascript" src="//use.typekit.net/gua1sca.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script> 
 
-    <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dijit/themes/tundra/tundra.css">
-    <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8/dojox/form/resources/RangeSlider.css" />
     <link rel="stylesheet" href="app/css/main.css">
 
-    
+    <link rel="icon" type="image/png" href="app/images/favicon_32x32.ico" />
 
     <script>
         var dojoConfig = {
@@ -32,11 +32,11 @@
             ]
         }
     </script>
-    <script type="text/javascript" src="http://js.arcgis.com/3.5compact"></script>
+    <script type="text/javascript" src="http://js.arcgis.com/3.7compact"></script>
     <!--http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.5compact-->
     <script>
-        require(["dojo/parser","app/main","dijit/layout/BorderContainer","dijit/layout/ContentPane","dijit/form/Button","dijit/form/FilteringSelect","dojo/domReady!"],
-                function(parser,Main,BorderContainer,ContentPane,Button,FilteringSelect){
+        require(["dojo/parser","app/main","dijit/layout/BorderContainer","dijit/TitlePane","dijit/layout/ContentPane","dijit/form/Button","dijit/form/FilteringSelect","dojo/domReady!"],
+                function(parser,Main,BorderContainer,TitlePane,ContentPane,Button,FilteringSelect){
                   parser.parse();
                   Main.initialize();
         });
@@ -129,6 +129,14 @@
     <div id="CenterPanel" dojoType="dijit.layout.ContentPane" splitter="true" region="center">
         <div id='map'>
         </div>
+
+        <div id="basemapContainer">
+            <div data-dojo-type="dijit/TitlePane" id="basemapTitlePane" data-dojo-props="duration:100,title:'Basemap', id:'basemapTitlePane',closable:true,  open:false">
+              <div data-dojo-type="dijit/layout/ContentPane" id="basemaps"  data-dojo-props="id:'basemaps'">                
+                <div id="basemapGallery" ></div>
+              </div>
+            </div>
+          </div>
     </div>
 </div>
 </body>

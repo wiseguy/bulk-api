@@ -7,8 +7,8 @@ var csv2json = require("csv-to-json");
 
 //CSV File Path or CSV String or Readable Stream Object
 var dateIndexes = [];
-
-var json = csv2json.parse("datesIndex_2013-08-19.csv");
+var dateOfData = "2013-10-24";
+var json = csv2json.parse("datesIndex_"+dateOfData+".csv");
 //var json = csv2json.parse("datesIndex_testData.csv");
 
 
@@ -19,14 +19,14 @@ for (var index in json) {
 
 var host = "127.0.0.1";
 var port = mongo.Connection.DEFAULT_PORT;
-var db = new mongo.Db("forma20130819",new mongo.Server(host,port,{}));
+var db = new mongo.Db("forma"+dateOfData,new mongo.Server(host,port,{}));
 
 //var projectionText = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]";
 
 
-var outFile = __dirname+"\\outputCSV\\formaUniqueAdminObjectIDs.csv";
+var outFile = __dirname+"\\outputCSV\\formaUniqueAdminObjectIDs"+dateOfData+".csv";
 var outFileAll = __dirname+"\\outputCSV\\formaAll.csv";
-var filePrefix = "s:\\Data\\WRI\\FORMA\\2013-09-10\\2005-12-19-to-2013-08-13\\part-";
+var filePrefix = "s:\\Data\\WRI\\FORMA\\"+dateOfData+"\\part-";
 
 //var filePrefix = "c:\\Aamir\\Projects_JS_Node\\csv\\testData\\part-";
 //var filePrefix = "D:\\Aamir\\Projects_JS_Node\\node-examples\\csv\\testData\\part-";
