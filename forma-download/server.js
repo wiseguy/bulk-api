@@ -3,8 +3,8 @@ var downloadURL = "http://alb/formaDownloads/";
 //http://gis-stage.wri.org/formaDownloads/
 //http://alb/formaDownloads/
 var host = "127.0.0.1";//for mongodb
-var dbName = "forma20130819";
-var datesFile = __dirname+"\\datesIndex_2013-08-19.csv";
+var dbName = "forma20131024";
+var datesFile = __dirname+"\\datesIndex_2013-10-24.csv";
 
 var fs = require("fs");
 var url = require('url');
@@ -111,6 +111,7 @@ server.on('connection', function(socket) {
 })
 
 function executeDownload(response,data) {
+
 	var callback = data.callback;
 	var iso3 = data.iso3.toUpperCase();
 	var regions = data.regions;
@@ -158,9 +159,13 @@ if (!db.serverConfig.isConnected()) {
 		console.log("requestType : " + requestType);
 		console.log("output : " + output);
 		console.log("email : " + email);
-		var queryObj = {"PROBABILITY":{$gte:minProb,$lte:maxProb},"ISO3":iso3};
+		var queryObj = {"PROBABILITY":{$gte:minProb,$lte:maxProb}};
 		//console.log(regions.length);
-		if (regions.length>0) {
+		
+		if (iso3) { // iso3 revceied use it
+			queryObj["ISO3"]= iso3;
+		}
+		if (regions.length>0) {// if regions revceived use it
 			queryObj["ADM_REGION"]={$in: regions};
 		}
 		console.log(queryObj);

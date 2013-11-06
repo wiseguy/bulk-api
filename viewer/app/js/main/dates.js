@@ -176,17 +176,19 @@
 {name:'26-Jun',id:173,year:2013},
 {name:'12-Jul',id:174,year:2013},
 {name:'28-Jul',id:175,year:2013},
-{name:'13-Aug',id:176,year:2013}
+{name:'13-Aug',id:176,year:2013},
+{name:'28-Aug',id:177,year:2013},
+{name:'14-Sep',id:178,year:2013}
 
     ],
     years: [{ name: '2005', id: 2005 }, { name: '2006', id: 2006 }, { name: '2007', id: 2007 },
     { name: '2008', id: 2008 }, { name: '2009', id: 2009 }, { name: '2010', id: 2010 },
     { name: '2011', id: 2011 }, { name: '2012', id: 2012 }, { name: '2013', id: 2013 }],
-
+    	
    defaultStartYear:2005,
    defaultStartDate:0,
    defaultEndYear:2013,
-   defaultEndDate:176
+   defaultEndDate:178
 
 });  //End main define
 
