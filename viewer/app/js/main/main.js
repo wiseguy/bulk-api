@@ -343,10 +343,10 @@ initSelects: function () {
      function (ready, config, lang,Memory, array) {
 
         var queryCountries = new QueryTask(config.countries.url);
-
+        var outFields = config.countries.outFields;
         var gadmQuery= new query();
         gadmQuery.returnGeometry = false;
-        gadmQuery.outFields = ["NAME_ENGLI","ID_0","ISO3"];
+        gadmQuery.outFields = outFields;
         gadmQuery.where = "1=1";
         queryCountries.execute(gadmQuery,function(results)    {
             console.log("Got Countries");
@@ -355,7 +355,7 @@ initSelects: function () {
                            // var countryNames = [{ name: "Select Country", id: 9999 }];
                            var countryNames = [];
                            array.forEach(feats,function(feat){
-                            featRow = {name:feat.attributes["NAME_ENGLI"],id:feat.attributes["ISO3"]};
+                            featRow = {name:feat.attributes["NAME_0"],id:feat.attributes["ISO3"]};
                             countryNames.push(featRow);
 
                         });

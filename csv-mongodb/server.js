@@ -4,17 +4,8 @@ var fs = require("fs");
 var exec = require('child_process').exec;
 var csv2json = require("csv-to-json");
 
-
 //CSV File Path or CSV String or Readable Stream Object
-var dateIndexes = [];
 var dateOfData = "2013-10-24";
-var json = csv2json.parse("datesIndex_"+dateOfData+".csv");
-//var json = csv2json.parse("datesIndex_testData.csv");
-
-
-for (var index in json) {
-        dateIndexes.push(json[index]["DATE\r"].replace(/-/g, ''))          
-    }
 
 
 var host = "127.0.0.1";
@@ -27,9 +18,6 @@ var db = new mongo.Db("forma"+dateOfData,new mongo.Server(host,port,{}));
 var outFile = __dirname+"\\outputCSV\\formaUniqueAdminObjectIDs"+dateOfData+".csv";
 var outFileAll = __dirname+"\\outputCSV\\formaAll.csv";
 var filePrefix = "s:\\Data\\WRI\\FORMA\\"+dateOfData+"\\part-";
-
-//var filePrefix = "c:\\Aamir\\Projects_JS_Node\\csv\\testData\\part-";
-//var filePrefix = "D:\\Aamir\\Projects_JS_Node\\node-examples\\csv\\testData\\part-";
 
 
 var csvColumns = "ISO3,ADM_REGION";
@@ -115,19 +103,6 @@ function parseCSV (file,startDate){
                         var max_of_array = Math.max.apply(Math, arrayProb);
                         var min_of_array = Math.min.apply(Math, arrayProb);
                         
-                        // for(var k=0;k<probability.length;k++){
-                        // if (parseInt(probability[k])>=minProbability){
-                        //     drop = false;     
-                        //     threshold_probability = parseInt(probability[k]);
-                        //     date_index = k;
-
-                            // console.log(arrayProb); 
-                            // console.log(drop);
-
-                           // break;                      
-                       //     } // end if
-                       // } //end for
-
                         
                         
                         
@@ -159,26 +134,6 @@ function parseCSV (file,startDate){
 
                             }
                                 
-                            //countriesCounter[row[7]]!=undefined?countriesCounter[row[7]]++:countriesCounter[row[7]]=1;
-
-                            //Create a Projection File
-                            // if (countries.indexOf(row[7])<0) {
-                                
-
-                            //     // if (row[7]!="BRA" && row[7]!="IDN"){
-                            //     countries.push(row[7]);    
-                            //     // }
-                            //     console.log("Created Projection file for " + row[7]);
-                            //     fs.appendFile(__dirname+"\\outputSHP\\"+row[7]+".prj", projectionText, function (err) {                                  
-                                  
-                            //     });
-                            // }
-
-                            //var unique_id = row[0].toString() + ("0000"+row[1]).slice(-4) + ("0000"+row[2]).slice(-4) + ("0000"+row[3]).slice(-4) + ("0000"+row[4]).slice(-4);// + row[1].toString() + row[2].toString() +  row[3].toString();
-                            //console.log(unique_id);
-                            // var insertRowCSVAll = "\n" + unique_id_str + "," + row[0] + "," + row[1] + "," + row[2] + "," + row[3] + ","
-                            //                  + row[4] + "," + row[5] + "," + row[6] + "," + row[7] + ","
-                            //                   + row[8] + "," + row[9] + "," + row[10] + "," + row[11];
                             //just the x y iso3 and region
                             var insertRowCSVAll = "\n" + unique_id_str + "," + row[5] + "," + row[6] + "," + row[7] + "," + row[9]; 
                                              // + threshold_probability + "," + dateIndexes[date_index];
@@ -284,48 +239,3 @@ function parseCSV (file,startDate){
 
 
 }
-
-//mongoexport --db formaData --collection forma --fields RES,TITLEH,TILEV,COL,ROW,LAT,LON,ISO3,PERC_TREE_COVER,ADM_REGION,ECO_REGION,MATT_HANSEN_DEFOR,PROBABILITY,DATE_INDEX --csv --out "c:\Aamir\Projects_JS_Node\csv\contacts.csv"
-
-
-//******************************
-// var fmt = require('fmt');
-// var amazonS3 = require('awssum-amazon-s3');
-
-// var s3 = new amazonS3.S3({
-//     'accessKeyId'     : "AKIAIIHNFRZNB22NTXTQ",
-//     'secretAccessKey' : "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",
-//     'region'          : amazonS3.US_EAST_1
-// });
-
-// s3.ListBuckets(function(err, data) {
-//     fmt.dump(err, 'err');
-//     fmt.dump(data, 'data');
-// });
-//*******************
-// var csv = require("csv-to-json");
-
-// //parses file into json and returns a json object
-// var json = csv.parse("part-00000");
-
-// //writes the parsed file to a file
-// csv.write("outcsv.json");
-//**********************
-// var csv = require('csv');
-// var fs = require('fs');
-// csv().from.stream(fs.createReadStream("part-00000"))
-// .to.path('part-00000out')
-// .transform( function(row){
-//   row.unshift(row.pop());
-//   console.log(row)
-//   return row;
-// })
-// .on('record', function(row,index){
-//   console.log('#'+index+' '+JSON.stringify(row));  
-// })
-// .on('end', function(count){
-//   console.log('Number of lines: '+count);
-// })
-// .on('error', function(error){
-//   console.log(error.message);
-// });
