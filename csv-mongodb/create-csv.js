@@ -5,19 +5,22 @@ var fs = require("fs");
 
 var dateOfData = "2013-10-24";
 var json = csv2json.parse("datesIndex_"+dateOfData+".csv");
-var outFileAll = __dirname+"\\outputCSV\\formaAll_"+dateOfData+".csv";
+//var outFileAll = __dirname+"\\outputCSV\\formaAll_"+dateOfData+".csv";
+
 var filePrefix = "s:\\Data\\WRI\\FORMA\\"+dateOfData+"\\part-";
+//var filePrefix = "D:\\temp\\"+dateOfData+"\\part-";
 var csvColumnsAll = "UNIQUE_ID_STR,UNIQUE_ID,RES,TILEH,TILEV,COL,ROW,LAT,LON,ISO3,PERC_TREE_COVER,ADM_REGION,ECO_REGION,MATT_HANSEN_DEFOR,PROBABILITY,DATE_RECORDED,DATE_INDEX";
-var filePaths = [];
+var filePaths = [];	
+var startFile = 0;
 var fileCount = 600;
 var minProbability = 20;
-
+var outFileAll = "D:\\temp\\forma_temp\\formaAll_"+dateOfData+"_"+fileCount+".csv";
 var dateIndexes = [];
 
 for (var index in json) {
 	 dateIndexes.push(json[index]["DATE\r"].toString());       
 }
-
+	
 var options = {
 	delimiter: "\t",
 	charset: "win1250"
@@ -28,13 +31,15 @@ console.log('Appended Field Names');
 var startDate = new Date();
 
 
-for (var j=0;j<fileCount;j++) {
-	filePaths.push(filePrefix + ("00000"+j).slice(-5));
-	parseCSV(filePaths[j],startDate);
-}   
+for (var j=startFile;j<fileCount;j++) {
+	var filePath = filePrefix + ("00000"+j).slice(-5);
+	parseCSV(filePath,startDate,j,function(fileNum){
+		console.log("Finished File " + fileNum)
+	});
+}    
 
 
-function parseCSV (file,startDate){
+function parseCSV (file,startDate,fileNum,handler){
 	CSV.parse(file, options, function (err, row, next) {
 
 		if (err) {
@@ -82,19 +87,18 @@ function parseCSV (file,startDate){
             next();
         }
         else {
+        	
+        	handler(fileNum);
 
-        	if (i===fileCount-1){
-                           //all rows reading complete
-                           console.log("finished file " + i);
-	                        //console.log(fileCount-1);
-	                        console.log("Started At " + startDate.toString());
+        	if (fileNum===fileCount-1) {
+	                        console.log("Started Processing At " + startDate.toString());
 	                        var endDate = new Date();
-	                        console.log("Ended At " + endDate.toString());
-	                    }
-	                    console.log(i);
-	                    i++;                        
-	                }
-	            });
+	                        console.log("Ended Processing At " + endDate.toString());
+	                    } 
+
+	                    return fileNum;                     
+	         }
+	});//csv parse
 
 
 

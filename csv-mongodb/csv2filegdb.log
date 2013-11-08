@@ -1,111 +1,311 @@
-2013-11-06 15:30:00|   0.2|  0.2|INFORM|FME 2013 SP2 (20130605 - Build 13499 - WIN32)
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME_HOME is 'C:\apps\FME2013-32\'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME ESRI Edition (node locked-crc)
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Serial Number: UYYU-DC72-116X
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Permanent License.
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Machine host name is: DXB
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|START - ProcessID: 18944, peak process memory usage: 31124 kB, current process memory usage: 31124 kB
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Command line arguments are `C:\apps\FME2013-32\fme.exe' `C:/Aamir/Projects_GIT_JS/FORMA-bulk-api-forked/csv-mongodb\wb-xlate-1383769799327_26296' `LOG_STANDARDOUT' `YES' `LogCount' `i:\FME_temp\wb-xlate-counts-1383769799329_26296'
-2013-11-06 15:30:00|   0.2|  0.1|INFORM|Shared directories for formats are : C:\Users\asuleman\Documents\FME\Formats;C:\apps\FME2013-32\datasources
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Shared directories for transformers are : C:\Users\asuleman\Documents\FME\Transformers;C:\apps\FME2013-32\transformers;C:\Users\asuleman\AppData\Roaming\Safe Software\FME\FME Store\Transformers
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Shared directories for coordinate systems are : C:\Users\asuleman\Documents\FME\CoordinateSystems
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Shared directories for coordinate system exceptions are : C:\Users\asuleman\Documents\FME\CoordinateSystemExceptions
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Shared directories for coordinate system grid overrides are : C:\Users\asuleman\Documents\FME\CoordinateSystemGridOverrides
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Shared directories for CS-MAP transformation exceptions are : C:\Users\asuleman\Documents\FME\CsmapTransformationExceptions
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Shared directories for transformer categories are : C:\Users\asuleman\Documents\FME\TransformerCategories
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Reader Keyword is `CSV_1'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Writer Keyword is `MULTI_WRITER'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Writer Group Definition Keyword is `MULTI_WRITER_DEF'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Reader type is `CSV'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Writer type is `MULTI_WRITER'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: No destination coordinate system set
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Current working directory is `C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Temporary directory is `i:\FME_temp'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: FME_HOME is `C:\apps\FME2013-32\'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: FME_BASE is 'no'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: FME_MF_DIR is 'C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb/'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: FME_MF_NAME is 'csv2filegdb.fmw'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: FME_PRODUCT_NAME is 'FME(R) 2013 SP2'
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|System Status: 498053MB of disk space available in the FME temporary directory (i:\FME_temp\)
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|System Status: 3919MB of virtual memory available
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Operating System: Microsoft Windows 7 64-bit Service Pack 1 (Build 7601)
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Platform: WIN32
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Locale: en_US
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|Code Page: 1252  (ANSI - Latin I)
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Process limit is 4095 MB (out of 7987 MB physical memory and 4095 MB address space)
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Start freeing memory when process usage exceeds 2895 MB of memory or 3495 MB of address space
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Stop freeing memory when process usage is below 2171 MB of memory and 2621 MB of address space
-2013-11-06 15:30:00|   0.2|  0.0|INFORM|FME Configuration: Autodetermining optimal maximum number of objects in memory
-2013-11-06 15:30:00|   0.3|  0.1|INFORM|Trying to find a DYNAMIC plugin for reader named `CSV'
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|Loaded module 'CSV' from file 'C:\apps\FME2013-32\plugins/CSV.dll'
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|FME API version of module 'CSV' matches current internal version (3.7 20121025)
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Opening CSV files in directory `C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb\outputCSV/\'
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|Using MultiWriter $Revision: 59162 $ ( $Date: 2009-04-07 10:04:59 -0700 (Tue, 07 Apr 2009) $ ) with keyword `MULTI_WRITER' to output data (ID_ATTRIBUTE is `multi_writer_id')
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|Writer output will be ordered by value of multi_writer_id
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|Loaded module 'LogCount_func' from file 'C:\apps\FME2013-32\plugins/LogCount_func.dll'
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|FME API version of module 'LogCount_func' matches current internal version (3.7 20121025)
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|FME Configuration: Using FME Reprojection Engine
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Separator Character: ','
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Skip Duplicate Delimiters: no
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Strip Quotes From Fields: yes
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: File Has Field Names: yes
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Field Names Follow Header: no
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Number of Lines to Skip: 1
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Number of Footer Lines to Skip: 0
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Allowing Spaces in Column Names: yes
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Max features to scan for schema: 10000
-2013-11-06 15:30:00|   0.3|  0.0|INFORM|CSV Reader: Opening dataset 'C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb\outputCSV\formaAll_test.csv'
-2013-11-06 15:30:00|   0.4|  0.0|INFORM|Using Tabular Reader $Revision: 105092 $ ( $Date: 2013-05-06 14:28:01 -0700 (Mon, 06 May 2013) $ ) to read files from directory `C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb\outputCSV'
-2013-11-06 15:30:00|   0.4|  0.0|INFORM|Stripping quotes around fields in CSV File `C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb\outputCSV\formaAll_test.csv'
-2013-11-06 15:30:00|   0.4|  0.0|INFORM|Opened Separated Value File C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb\outputCSV\formaAll_test.csv for input with delimiter `,'
-2013-11-06 15:30:00|   0.4|  0.0|INFORM|Skipped line `UNIQUE_ID_STR,UNIQUE_ID,RES,TILEH,TILEV,COL,ROW,LAT,LON,ISO3,PERC_TREE_COVER,ADM_REGION,ECO_REGION,MATT_HANSEN_DEFOR,PROBABILITY,DATE_RECORDED,DATE_INDEX' in CSV File `C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb\outputCSV\formaAll_test.csv'
-2013-11-06 15:30:01|   0.6|  0.3|INFORM|Trying to find a DYNAMIC plugin for writer named `FILEGDB'
-2013-11-06 15:30:01|   0.6|  0.0|INFORM|Loaded module 'FILEGDB' from file 'C:\apps\FME2013-32\plugins/FILEGDB.dll'
-2013-11-06 15:30:01|   0.6|  0.0|INFORM|FME API version of module 'FILEGDB' matches current internal version (3.7 20121025)
-2013-11-06 15:30:01|   0.6|  0.0|INFORM|FME Configuration: Destination coordinate system set to `LL84'
-2013-11-06 15:30:01|   0.6|  0.0|INFORM|Coordinate System `LL84' parameters: CS_NAME=`LL84' DESC_NM=`WGS84 datum, Latitude-Longitude; Degrees' DT_NAME=`WGS84' GROUP=`LL' MAP_SCL=`1' MAX_LAT=`90' MAX_LNG=`182' MIN_LAT=`-90' MIN_LNG=`-182' PROJ=`LL' QUAD=`1' SCL_RED=`1' SOURCE=`Mentor Software' UNIT=`DEGREE' 
-2013-11-06 15:30:01|   0.6|  0.0|INFORM|FME API version of module 'FILEGDB' matches current internal version (3.7 20121025)
-2013-11-06 15:30:01|   0.6|  0.0|INFORM|Writer `FILEGDB_1' of type `FILEGDB' using group definition keyword `FILEGDB_1_DEF'
-2013-11-06 15:30:01|   0.6|  0.0|INFORM|FME API version of module 'FILEGDB' matches current internal version (3.7 20121025)
-2013-11-06 15:30:02|   1.8|  1.2|INFORM|CSV Reader: Closing dataset 'C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb\outputCSV\formaAll_test.csv'
-2013-11-06 15:30:02|   1.8|  0.0|INFORM|Emptying factory pipeline
-2013-11-06 15:30:02|   1.8|  0.0|STATS |Unexpected Input Remover(TestFactory): Tested 1382 input feature(s) -- 1382 feature(s) passed and 0 feature(s) failed
-2013-11-06 15:30:02|   1.8|  0.0|STATS |Unexpected Input Remover Nuker(TeeFactory): Cloned 0 input feature(s) into 0 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |Source -> Generic(TeeFactory): Cloned 1382 input feature(s) into 1382 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |CSV Feature Counter -1 5(TeeFactory): Cloned 1382 input feature(s) into 1382 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |2DPointAdder_GeomFilter(TestFactory): Tested 1382 input feature(s) -- 1382 feature(s) passed and 0 feature(s) failed
-2013-11-06 15:30:02|   1.8|  0.0|STATS |2DPointAdder(TeeFactory): Cloned 1382 input feature(s) into 1382 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |2DPointAdder_WarnInvalids(TeeFactory): Cloned 0 input feature(s) into 0 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |2DPointAdder_OUTPUT Feature Counter -1 8(TeeFactory): Cloned 1382 input feature(s) into 1382 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |DateFormatter(TeeFactory): Cloned 1382 input feature(s) into 1382 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |DateFormatter_OUTPUT Feature Counter -1 9(TeeFactory): Cloned 1382 input feature(s) into 1382 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |DateFormatter_OUTPUT -> CSV Correlator(TeeFactory): Cloned 1382 input feature(s) into 1382 output feature(s)
-2013-11-06 15:30:02|   1.8|  0.0|STATS |Final Output Feature Type Router(TestFactory): Tested 1382 input feature(s) -- 1382 feature(s) passed and 0 feature(s) failed
-2013-11-06 15:30:02|   1.8|  0.0|STATS |Final Output Nuker(TeeFactory): Cloned 0 input feature(s) into 0 output feature(s)
-2013-11-06 15:30:02|   1.9|  0.1|INFORM|=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|INFORM|Feature output statistics for `FILEGDB' writer using keyword `FILEGDB_1':
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|STATS |                               Features Written
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|STATS |CSV                                                                       1382
-2013-11-06 15:30:02|   1.9|  0.0|STATS |==============================================================================
-2013-11-06 15:30:02|   1.9|  0.0|STATS |Total Features Written                                                    1382
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|STATS |                            Features Read Summary
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|STATS |CSV                                                                       1382
-2013-11-06 15:30:02|   1.9|  0.0|STATS |==============================================================================
-2013-11-06 15:30:02|   1.9|  0.0|STATS |Total Features Read                                                       1382
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|STATS |                           Features Written Summary
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|STATS |CSV                                                                       1382
-2013-11-06 15:30:02|   1.9|  0.0|STATS |==============================================================================
-2013-11-06 15:30:02|   1.9|  0.0|STATS |Total Features Written                                                    1382
-2013-11-06 15:30:02|   1.9|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2013-11-06 15:30:02|   1.9|  0.0|INFORM|CSV Reader: Done reading CSV files in directory `C:\Aamir\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb\outputCSV/\'
-2013-11-06 15:30:02|   1.9|  0.0|INFORM|Translation was SUCCESSFUL with 0 warning(s) (1382 feature(s) output)
-2013-11-06 15:30:02|   1.9|  0.0|INFORM|FME Session Duration: 2.6 seconds. (CPU: 1.3s user, 0.4s system)
-2013-11-06 15:30:02|   1.9|  0.0|INFORM|END - ProcessID: 18944, peak process memory usage: 72532 kB, current process memory usage: 66384 kB
+2013-11-08 11:36:08|   0.1|  0.1|INFORM|FME 2013 SP2 (20130605 - Build 13499 - WIN64)
+2013-11-08 11:36:08|   0.1|  0.0|INFORM|FME_HOME is 'C:\Program Files\FME\'
+2013-11-08 11:36:08|   0.1|  0.0|INFORM|FME Smallworld Edition (node locked-crc)
+2013-11-08 11:36:08|   0.1|  0.0|INFORM|Serial Number: 0
+2013-11-08 11:36:08|   0.1|  0.0|INFORM|Temporary License: 13 days left.
+2013-11-08 11:36:08|   0.1|  0.0|INFORM|Machine host name is: ALB
+2013-11-08 11:36:08|   0.1|  0.0|INFORM|START - ProcessID: 8760, peak process memory usage: 39288 kB, current process memory usage: 39288 kB
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: Command line arguments are `C:\Program Files\FME\fme.exe' `Z:/Projects_GIT_JS/FORMA-bulk-api-forked/csv-mongodb\wb-xlate-1383928560170_2332' `LOG_STANDARDOUT' `YES' `LogCount' `D:\fme_temp\wb-xlate-counts-1383928560773_2332'
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|Shared directories for formats are : C:\Users\asuleman\Documents\FME\Formats;C:\Program Files\FME\datasources
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|Shared directories for transformers are : C:\Users\asuleman\Documents\FME\Transformers;C:\Program Files\FME\transformers
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|Shared directories for coordinate systems are : C:\Users\asuleman\Documents\FME\CoordinateSystems
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|Shared directories for coordinate system exceptions are : C:\Users\asuleman\Documents\FME\CoordinateSystemExceptions
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|Shared directories for coordinate system grid overrides are : C:\Users\asuleman\Documents\FME\CoordinateSystemGridOverrides
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|Shared directories for CS-MAP transformation exceptions are : C:\Users\asuleman\Documents\FME\CsmapTransformationExceptions
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|Shared directories for transformer categories are : C:\Users\asuleman\Documents\FME\TransformerCategories
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: Reader Keyword is `CSV_1'
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: Writer Keyword is `MULTI_WRITER'
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: Writer Group Definition Keyword is `MULTI_WRITER_DEF'
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: Reader type is `CSV'
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: Writer type is `MULTI_WRITER'
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: No destination coordinate system set
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: Current working directory is `Z:\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb'
+2013-11-08 11:36:09|   0.1|  0.0|INFORM|FME Configuration: Temporary directory is `D:\fme_temp'
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: FME_HOME is `C:\Program Files\FME\'
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: FME_BASE is 'no'
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: FME_MF_DIR is 'Z:\Projects_GIT_JS\FORMA-bulk-api-forked\csv-mongodb/'
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: FME_MF_NAME is 'csv2filegdb.fmw'
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: FME_PRODUCT_NAME is 'FME(R) 2013 SP2'
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|System Status: 172557MB of disk space available in the FME temporary directory (D:\fme_temp\)
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|System Status: 8388417MB of virtual memory available
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|Operating System: Microsoft Windows 7 64-bit Service Pack 1 (Build 7601)
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Platform: WIN64
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|Locale: en_US
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|Code Page: 1252  (ANSI - Latin I)
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: Process limit is 8073 MB (out of 8073 MB physical memory and 8388607 MB address space)
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: Start freeing memory when process usage exceeds 4843 MB of memory or 8388007 MB of address space
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: Stop freeing memory when process usage is below 3632 MB of memory and 6291005 MB of address space
+2013-11-08 11:36:10|   0.1|  0.0|INFORM|FME Configuration: Autodetermining optimal maximum number of objects in memory
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|Trying to find a DYNAMIC plugin for reader named `CSV'
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|Loaded module 'CSV' from file 'C:\Program Files\FME\plugins/CSV.dll'
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|FME API version of module 'CSV' matches current internal version (3.7 20121025)
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Opening CSV files in directory `D:\temp\forma_temp/\'
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|Using MultiWriter $Revision: 59162 $ ( $Date: 2009-04-07 10:04:59 -0700 (Tue, 07 Apr 2009) $ ) with keyword `MULTI_WRITER' to output data (ID_ATTRIBUTE is `multi_writer_id')
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|Writer output will be ordered by value of multi_writer_id
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|Loaded module 'LogCount_func' from file 'C:\Program Files\FME\plugins/LogCount_func.dll'
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|FME API version of module 'LogCount_func' matches current internal version (3.7 20121025)
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|FME Configuration: Using FME Reprojection Engine
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Separator Character: ','
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Skip Duplicate Delimiters: no
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Strip Quotes From Fields: yes
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: File Has Field Names: yes
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Field Names Follow Header: no
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Number of Lines to Skip: 1
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Number of Footer Lines to Skip: 0
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Allowing Spaces in Column Names: yes
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Max features to scan for schema: 10000
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|CSV Reader: Opening dataset 'D:\temp\forma_temp\formaAll_2013-10-24_600.csv'
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|Using Tabular Reader $Revision: 105092 $ ( $Date: 2013-05-06 14:28:01 -0700 (Mon, 06 May 2013) $ ) to read files from directory `D:\temp\forma_temp'
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|Stripping quotes around fields in CSV File `D:\temp\forma_temp\formaAll_2013-10-24_600.csv'
+2013-11-08 11:36:11|   0.2|  0.0|INFORM|Opened Separated Value File D:\temp\forma_temp\formaAll_2013-10-24_600.csv for input with delimiter `,'
+2013-11-08 11:36:12|   0.2|  0.0|INFORM|Skipped line `UNIQUE_ID_STR,UNIQUE_ID,RES,TILEH,TILEV,COL,ROW,LAT,LON,ISO3,PERC_TREE_COVER,ADM_REGION,ECO_REGION,MATT_HANSEN_DEFOR,PROBABILITY,DATE_RECORDED,DATE_INDEX' in CSV File `D:\temp\forma_temp\formaAll_2013-10-24_600.csv'
+2013-11-08 11:36:13|   0.4|  0.2|INFORM|Trying to find a DYNAMIC plugin for writer named `FILEGDB'
+2013-11-08 11:36:13|   0.4|  0.0|INFORM|Loaded module 'FILEGDB' from file 'C:\Program Files\FME\plugins/FILEGDB.dll'
+2013-11-08 11:36:14|   0.4|  0.0|INFORM|FME API version of module 'FILEGDB' matches current internal version (3.7 20121025)
+2013-11-08 11:36:14|   0.4|  0.0|INFORM|FME Configuration: Destination coordinate system set to `LL84'
+2013-11-08 11:36:14|   0.4|  0.0|INFORM|Coordinate System `LL84' parameters: CS_NAME=`LL84' DESC_NM=`WGS84 datum, Latitude-Longitude; Degrees' DT_NAME=`WGS84' GROUP=`LL' MAP_SCL=`1' MAX_LAT=`90' MAX_LNG=`182' MIN_LAT=`-90' MIN_LNG=`-182' PROJ=`LL' QUAD=`1' SCL_RED=`1' SOURCE=`Mentor Software' UNIT=`DEGREE' 
+2013-11-08 11:36:14|   0.4|  0.0|INFORM|FME API version of module 'FILEGDB' matches current internal version (3.7 20121025)
+2013-11-08 11:36:14|   0.4|  0.0|INFORM|Writer `FILEGDB_1' of type `FILEGDB' using group definition keyword `FILEGDB_1_DEF'
+2013-11-08 11:36:14|   0.4|  0.0|INFORM|FME API version of module 'FILEGDB' matches current internal version (3.7 20121025)
+2013-11-08 11:36:15|   1.5|  1.1|INFORM|Reading source feature # 2500
+2013-11-08 11:36:16|   2.4|  0.9|INFORM|Reading source feature # 5000
+2013-11-08 11:36:17|   3.3|  0.9|INFORM|Reading source feature # 7500
+2013-11-08 11:36:18|   4.2|  0.9|INFORM|Reading source feature # 10000
+2013-11-08 11:36:19|   5.1|  0.9|INFORM|Reading source feature # 12500
+2013-11-08 11:36:20|   6.0|  0.9|INFORM|Reading source feature # 15000
+2013-11-08 11:36:21|   6.9|  0.9|INFORM|Reading source feature # 17500
+2013-11-08 11:36:22|   7.8|  0.9|INFORM|Reading source feature # 20000
+2013-11-08 11:36:23|   8.8|  0.9|INFORM|Reading source feature # 22500
+2013-11-08 11:36:23|   9.7|  0.9|INFORM|Reading source feature # 25000
+2013-11-08 11:36:24|  10.6|  0.9|INFORM|Reading source feature # 27500
+2013-11-08 11:36:25|  11.5|  0.9|INFORM|Reading source feature # 30000
+2013-11-08 11:36:26|  12.4|  0.9|INFORM|Reading source feature # 32500
+2013-11-08 11:36:27|  13.3|  0.9|INFORM|Reading source feature # 35000
+2013-11-08 11:36:28|  14.2|  0.9|INFORM|Reading source feature # 37500
+2013-11-08 11:36:29|  15.1|  0.9|INFORM|Reading source feature # 40000
+2013-11-08 11:36:30|  16.1|  0.9|INFORM|Reading source feature # 42500
+2013-11-08 11:36:31|  17.0|  0.9|INFORM|Reading source feature # 45000
+2013-11-08 11:36:32|  17.9|  0.9|INFORM|Reading source feature # 47500
+2013-11-08 11:36:33|  18.8|  0.9|INFORM|Reading source feature # 50000
+2013-11-08 11:36:34|  19.7|  0.9|INFORM|Reading source feature # 52500
+2013-11-08 11:36:35|  20.6|  0.9|INFORM|Reading source feature # 55000
+2013-11-08 11:36:36|  21.5|  0.9|INFORM|Reading source feature # 57500
+2013-11-08 11:36:37|  22.4|  0.9|INFORM|Reading source feature # 60000
+2013-11-08 11:36:38|  23.3|  0.9|INFORM|Reading source feature # 62500
+2013-11-08 11:36:39|  24.2|  0.9|INFORM|Reading source feature # 65000
+2013-11-08 11:36:40|  25.1|  0.9|INFORM|Reading source feature # 67500
+2013-11-08 11:36:41|  26.1|  0.9|INFORM|Reading source feature # 70000
+2013-11-08 11:36:42|  27.0|  0.9|INFORM|Reading source feature # 72500
+2013-11-08 11:36:43|  27.9|  0.9|INFORM|Reading source feature # 75000
+2013-11-08 11:36:44|  28.8|  0.9|INFORM|Reading source feature # 77500
+2013-11-08 11:36:45|  29.7|  0.9|INFORM|Reading source feature # 80000
+2013-11-08 11:36:46|  30.6|  0.9|INFORM|Reading source feature # 82500
+2013-11-08 11:36:47|  31.5|  0.9|INFORM|Reading source feature # 85000
+2013-11-08 11:36:47|  32.4|  0.9|INFORM|Reading source feature # 87500
+2013-11-08 11:36:48|  33.4|  0.9|INFORM|Reading source feature # 90000
+2013-11-08 11:36:49|  34.3|  0.9|INFORM|Reading source feature # 92500
+2013-11-08 11:36:50|  35.2|  0.9|INFORM|Reading source feature # 95000
+2013-11-08 11:36:51|  36.1|  0.9|INFORM|Reading source feature # 97500
+2013-11-08 11:36:52|  37.0|  0.9|INFORM|Reading source feature # 100000
+2013-11-08 11:36:53|  37.9|  0.9|INFORM|Reading source feature # 102500
+2013-11-08 11:36:54|  38.9|  0.9|INFORM|Reading source feature # 105000
+2013-11-08 11:36:55|  39.8|  0.9|INFORM|Reading source feature # 107500
+2013-11-08 11:36:56|  40.7|  0.9|INFORM|Reading source feature # 110000
+2013-11-08 11:36:57|  41.6|  0.9|INFORM|Reading source feature # 112500
+2013-11-08 11:36:58|  42.5|  0.9|INFORM|Reading source feature # 115000
+2013-11-08 11:36:59|  43.4|  0.9|INFORM|Reading source feature # 117500
+2013-11-08 11:37:00|  44.4|  0.9|INFORM|Reading source feature # 120000
+2013-11-08 11:37:01|  45.3|  0.9|INFORM|Reading source feature # 122500
+2013-11-08 11:37:02|  46.2|  0.9|INFORM|Reading source feature # 125000
+2013-11-08 11:37:03|  47.1|  0.9|INFORM|Reading source feature # 127500
+2013-11-08 11:37:04|  48.0|  0.9|INFORM|Reading source feature # 130000
+2013-11-08 11:37:05|  49.0|  0.9|INFORM|Reading source feature # 132500
+2013-11-08 11:37:06|  49.9|  0.9|INFORM|Reading source feature # 135000
+2013-11-08 11:37:07|  50.8|  0.9|INFORM|Reading source feature # 137500
+2013-11-08 11:37:08|  51.7|  0.9|INFORM|Reading source feature # 140000
+2013-11-08 11:37:09|  52.6|  0.9|INFORM|Reading source feature # 142500
+2013-11-08 11:37:09|  53.6|  0.9|INFORM|Reading source feature # 145000
+2013-11-08 11:37:10|  54.5|  0.9|INFORM|Reading source feature # 147500
+2013-11-08 11:37:11|  55.4|  0.9|INFORM|Reading source feature # 150000
+2013-11-08 11:37:12|  56.3|  0.9|INFORM|Reading source feature # 152500
+2013-11-08 11:37:13|  57.3|  0.9|INFORM|Reading source feature # 155000
+2013-11-08 11:37:14|  58.2|  0.9|INFORM|Reading source feature # 157500
+2013-11-08 11:37:15|  59.1|  0.9|INFORM|Reading source feature # 160000
+2013-11-08 11:37:16|  60.0|  0.9|INFORM|Reading source feature # 162500
+2013-11-08 11:37:17|  60.9|  0.9|INFORM|Reading source feature # 165000
+2013-11-08 11:37:18|  61.9|  0.9|INFORM|Reading source feature # 167500
+2013-11-08 11:37:19|  62.8|  0.9|INFORM|Reading source feature # 170000
+2013-11-08 11:37:20|  63.7|  0.9|INFORM|Reading source feature # 172500
+2013-11-08 11:37:21|  64.6|  0.9|INFORM|Reading source feature # 175000
+2013-11-08 11:37:22|  65.5|  0.9|INFORM|Reading source feature # 177500
+2013-11-08 11:37:23|  66.5|  0.9|INFORM|Reading source feature # 180000
+2013-11-08 11:37:24|  67.4|  0.9|INFORM|Reading source feature # 182500
+2013-11-08 11:37:25|  68.3|  0.9|INFORM|Reading source feature # 185000
+2013-11-08 11:37:26|  69.2|  0.9|INFORM|Reading source feature # 187500
+2013-11-08 11:37:27|  70.1|  0.9|INFORM|Reading source feature # 190000
+2013-11-08 11:37:28|  71.1|  0.9|INFORM|Reading source feature # 192500
+2013-11-08 11:37:29|  72.0|  0.9|INFORM|Reading source feature # 195000
+2013-11-08 11:37:30|  72.9|  0.9|INFORM|Reading source feature # 197500
+2013-11-08 11:37:31|  73.8|  0.9|INFORM|Reading source feature # 200000
+2013-11-08 11:37:32|  74.7|  0.9|INFORM|Reading source feature # 202500
+2013-11-08 11:37:33|  75.7|  0.9|INFORM|Reading source feature # 205000
+2013-11-08 11:37:34|  76.6|  0.9|INFORM|Reading source feature # 207500
+2013-11-08 11:37:34|  77.5|  0.9|INFORM|Reading source feature # 210000
+2013-11-08 11:37:35|  78.5|  0.9|INFORM|Reading source feature # 212500
+2013-11-08 11:37:36|  79.4|  0.9|INFORM|Reading source feature # 215000
+2013-11-08 11:37:37|  80.3|  0.9|INFORM|Reading source feature # 217500
+2013-11-08 11:37:38|  81.2|  0.9|INFORM|Reading source feature # 220000
+2013-11-08 11:37:39|  82.2|  0.9|INFORM|Reading source feature # 222500
+2013-11-08 11:37:40|  83.1|  0.9|INFORM|Reading source feature # 225000
+2013-11-08 11:37:41|  84.0|  0.9|INFORM|Reading source feature # 227500
+2013-11-08 11:37:42|  84.9|  0.9|INFORM|Reading source feature # 230000
+2013-11-08 11:37:43|  85.9|  0.9|INFORM|Reading source feature # 232500
+2013-11-08 11:37:44|  86.8|  0.9|INFORM|Reading source feature # 235000
+2013-11-08 11:37:45|  87.7|  0.9|INFORM|Reading source feature # 237500
+2013-11-08 11:37:46|  88.7|  0.9|INFORM|Reading source feature # 240000
+2013-11-08 11:37:47|  89.6|  0.9|INFORM|Reading source feature # 242500
+2013-11-08 11:37:48|  90.5|  0.9|INFORM|Reading source feature # 245000
+2013-11-08 11:37:49|  91.4|  0.9|INFORM|Reading source feature # 247500
+2013-11-08 11:37:50|  92.4|  0.9|INFORM|Reading source feature # 250000
+2013-11-08 11:37:51|  93.3|  0.9|INFORM|Reading source feature # 252500
+2013-11-08 11:37:52|  94.2|  0.9|INFORM|Reading source feature # 255000
+2013-11-08 11:37:53|  95.1|  0.9|INFORM|Reading source feature # 257500
+2013-11-08 11:37:54|  96.0|  0.9|INFORM|Reading source feature # 260000
+2013-11-08 11:37:55|  97.0|  0.9|INFORM|Reading source feature # 262500
+2013-11-08 11:37:56|  97.9|  0.9|INFORM|Reading source feature # 265000
+2013-11-08 11:37:57|  98.9|  0.9|INFORM|Reading source feature # 267500
+2013-11-08 11:37:58|  99.8|  0.9|INFORM|Reading source feature # 270000
+2013-11-08 11:37:59| 100.7|  0.9|INFORM|Reading source feature # 272500
+2013-11-08 11:38:00| 101.7|  0.9|INFORM|Reading source feature # 275000
+2013-11-08 11:38:01| 102.6|  0.9|INFORM|Reading source feature # 277500
+2013-11-08 11:38:02| 103.5|  0.9|INFORM|Reading source feature # 280000
+2013-11-08 11:38:03| 104.4|  0.9|INFORM|Reading source feature # 282500
+2013-11-08 11:38:04| 105.4|  0.9|INFORM|Reading source feature # 285000
+2013-11-08 11:38:05| 106.3|  0.9|INFORM|Reading source feature # 287500
+2013-11-08 11:38:06| 107.2|  0.9|INFORM|Reading source feature # 290000
+2013-11-08 11:38:06| 108.2|  0.9|INFORM|Reading source feature # 292500
+2013-11-08 11:38:07| 109.1|  0.9|INFORM|Reading source feature # 295000
+2013-11-08 11:38:08| 110.0|  0.9|INFORM|Reading source feature # 297500
+2013-11-08 11:38:09| 111.0|  0.9|INFORM|Reading source feature # 300000
+2013-11-08 11:38:10| 111.9|  0.9|INFORM|Reading source feature # 302500
+2013-11-08 11:38:11| 112.8|  0.9|INFORM|Reading source feature # 305000
+2013-11-08 11:38:12| 113.8|  0.9|INFORM|Reading source feature # 307500
+2013-11-08 11:38:13| 114.7|  0.9|INFORM|Reading source feature # 310000
+2013-11-08 11:38:14| 115.6|  0.9|INFORM|Reading source feature # 312500
+2013-11-08 11:38:15| 116.5|  0.9|INFORM|Reading source feature # 315000
+2013-11-08 11:38:16| 117.5|  0.9|INFORM|Reading source feature # 317500
+2013-11-08 11:38:17| 118.4|  0.9|INFORM|Reading source feature # 320000
+2013-11-08 11:38:18| 119.4|  0.9|INFORM|Reading source feature # 322500
+2013-11-08 11:38:19| 120.3|  0.9|INFORM|Reading source feature # 325000
+2013-11-08 11:38:20| 121.2|  0.9|INFORM|Reading source feature # 327500
+2013-11-08 11:38:21| 122.2|  0.9|INFORM|Reading source feature # 330000
+2013-11-08 11:38:22| 123.1|  0.9|INFORM|Reading source feature # 332500
+2013-11-08 11:38:23| 124.0|  0.9|INFORM|Reading source feature # 335000
+2013-11-08 11:38:24| 124.9|  0.9|INFORM|Reading source feature # 337500
+2013-11-08 11:38:25| 125.9|  0.9|INFORM|Reading source feature # 340000
+2013-11-08 11:38:26| 126.8|  0.9|INFORM|Reading source feature # 342500
+2013-11-08 11:38:27| 127.7|  0.9|INFORM|Reading source feature # 345000
+2013-11-08 11:38:28| 128.7|  0.9|INFORM|Reading source feature # 347500
+2013-11-08 11:38:29| 129.6|  0.9|INFORM|Reading source feature # 350000
+2013-11-08 11:38:30| 130.6|  0.9|INFORM|Reading source feature # 352500
+2013-11-08 11:38:31| 131.5|  0.9|INFORM|Reading source feature # 355000
+2013-11-08 11:38:32| 132.4|  0.9|INFORM|Reading source feature # 357500
+2013-11-08 11:38:33| 133.3|  0.9|INFORM|Reading source feature # 360000
+2013-11-08 11:38:34| 134.3|  0.9|INFORM|Reading source feature # 362500
+2013-11-08 11:38:35| 135.2|  0.9|INFORM|Reading source feature # 365000
+2013-11-08 11:38:36| 136.2|  1.0|INFORM|Reading source feature # 367500
+2013-11-08 11:38:37| 137.1|  1.0|INFORM|Reading source feature # 370000
+2013-11-08 11:38:38| 138.1|  0.9|INFORM|Reading source feature # 372500
+2013-11-08 11:38:39| 139.0|  0.9|INFORM|Reading source feature # 375000
+2013-11-08 11:38:40| 139.9|  0.9|INFORM|Reading source feature # 377500
+2013-11-08 11:38:41| 140.9|  0.9|INFORM|Reading source feature # 380000
+2013-11-08 11:38:42| 141.8|  0.9|INFORM|Reading source feature # 382500
+2013-11-08 11:38:43| 142.7|  0.9|INFORM|Reading source feature # 385000
+2013-11-08 11:38:44| 143.7|  0.9|INFORM|Reading source feature # 387500
+2013-11-08 11:38:45| 144.6|  0.9|INFORM|Reading source feature # 390000
+2013-11-08 11:38:46| 145.5|  0.9|INFORM|Reading source feature # 392500
+2013-11-08 11:38:47| 146.5|  0.9|INFORM|Reading source feature # 395000
+2013-11-08 11:38:48| 147.4|  0.9|INFORM|Reading source feature # 397500
+2013-11-08 11:38:48| 148.4|  0.9|INFORM|Reading source feature # 400000
+2013-11-08 11:38:49| 149.3|  0.9|INFORM|Reading source feature # 402500
+2013-11-08 11:38:50| 150.2|  0.9|INFORM|Reading source feature # 405000
+2013-11-08 11:38:51| 151.1|  0.9|INFORM|Reading source feature # 407500
+2013-11-08 11:38:52| 152.1|  0.9|INFORM|Reading source feature # 410000
+2013-11-08 11:38:53| 153.0|  0.9|INFORM|Reading source feature # 412500
+2013-11-08 11:38:54| 154.0|  0.9|INFORM|Reading source feature # 415000
+2013-11-08 11:38:55| 154.9|  0.9|INFORM|Reading source feature # 417500
+2013-11-08 11:38:56| 155.8|  0.9|INFORM|Reading source feature # 420000
+2013-11-08 11:38:57| 156.8|  0.9|INFORM|Reading source feature # 422500
+2013-11-08 11:38:58| 157.7|  1.0|INFORM|Reading source feature # 425000
+2013-11-08 11:38:59| 158.7|  1.0|INFORM|Reading source feature # 427500
+2013-11-08 11:39:00| 159.6|  0.9|INFORM|Reading source feature # 430000
+2013-11-08 11:39:01| 160.5|  0.9|INFORM|Reading source feature # 432500
+2013-11-08 11:39:02| 161.5|  0.9|INFORM|Reading source feature # 435000
+2013-11-08 11:39:03| 162.4|  1.0|INFORM|Reading source feature # 437500
+2013-11-08 11:39:04| 163.4|  0.9|INFORM|Reading source feature # 440000
+2013-11-08 11:39:05| 164.3|  1.0|INFORM|Reading source feature # 442500
+2013-11-08 11:39:06| 165.3|  1.0|INFORM|Reading source feature # 445000
+2013-11-08 11:39:07| 166.2|  0.9|INFORM|Reading source feature # 447500
+2013-11-08 11:39:08| 167.1|  0.9|INFORM|Reading source feature # 450000
+2013-11-08 11:39:09| 168.1|  0.9|INFORM|Reading source feature # 452500
+2013-11-08 11:39:10| 169.0|  0.9|INFORM|Reading source feature # 455000
+2013-11-08 11:39:11| 169.9|  0.9|INFORM|Reading source feature # 457500
+2013-11-08 11:39:12| 170.9|  0.9|INFORM|Reading source feature # 460000
+2013-11-08 11:39:13| 171.8|  0.9|INFORM|Reading source feature # 462500
+2013-11-08 11:39:14| 172.8|  0.9|INFORM|Reading source feature # 465000
+2013-11-08 11:39:15| 173.7|  0.9|INFORM|Reading source feature # 467500
+2013-11-08 11:39:16| 174.6|  0.9|INFORM|Reading source feature # 470000
+2013-11-08 11:39:17| 175.6|  0.9|INFORM|Reading source feature # 472500
+2013-11-08 11:39:18| 176.5|  0.9|INFORM|Reading source feature # 475000
+2013-11-08 11:39:19| 177.4|  0.9|INFORM|Reading source feature # 477500
+2013-11-08 11:39:20| 178.4|  0.9|INFORM|Reading source feature # 480000
+2013-11-08 11:39:21| 179.3|  1.0|INFORM|Reading source feature # 482500
+2013-11-08 11:39:22| 180.3|  0.9|INFORM|Reading source feature # 485000
+2013-11-08 11:39:23| 181.2|  0.9|INFORM|Reading source feature # 487500
+2013-11-08 11:39:24| 182.1|  0.9|INFORM|Reading source feature # 490000
+2013-11-08 11:39:25| 183.1|  0.9|INFORM|Reading source feature # 492500
+2013-11-08 11:39:26| 184.0|  0.9|INFORM|Reading source feature # 495000
+2013-11-08 11:39:27| 185.0|  1.0|INFORM|Reading source feature # 497500
+2013-11-08 11:39:28| 185.9|  0.9|INFORM|Reading source feature # 500000
+2013-11-08 11:39:29| 186.8|  0.9|INFORM|Reading source feature # 502500
+2013-11-08 11:39:30| 187.8|  0.9|INFORM|Reading source feature # 505000
+2013-11-08 11:39:31| 188.7|  0.9|INFORM|Reading source feature # 507500
+2013-11-08 11:39:32| 189.6|  0.9|INFORM|Reading source feature # 510000
+2013-11-08 11:39:33| 190.6|  0.9|INFORM|Reading source feature # 512500
+2013-11-08 11:39:34| 191.5|  1.0|INFORM|Reading source feature # 515000
+2013-11-08 11:39:35| 192.5|  1.0|INFORM|Reading source feature # 517500
+2013-11-08 11:39:36| 193.4|  0.9|INFORM|Reading source feature # 520000
+2013-11-08 11:39:37| 194.3|  1.0|INFORM|Reading source feature # 522500
+2013-11-08 11:39:38| 195.3|  1.0|INFORM|Reading source feature # 525000
+2013-11-08 11:39:38| 196.3|  1.0|INFORM|Reading source feature # 527500
+2013-11-08 11:39:39| 197.2|  1.0|INFORM|Reading source feature # 530000
+2013-11-08 11:39:41| 198.2|  1.0|INFORM|Reading source feature # 532500
+2013-11-08 11:39:41| 199.1|  1.0|INFORM|Reading source feature # 535000
+2013-11-08 11:39:42| 200.1|  0.9|INFORM|Reading source feature # 537500
+2013-11-08 11:39:43| 201.0|  1.0|INFORM|Reading source feature # 540000
+2013-11-08 11:39:44| 202.0|  1.0|INFORM|Reading source feature # 542500
+2013-11-08 11:39:45| 202.9|  0.9|INFORM|Reading source feature # 545000
+2013-11-08 11:39:46| 203.8|  0.9|INFORM|Reading source feature # 547500
+2013-11-08 11:39:47| 204.8|  0.9|INFORM|Reading source feature # 550000
+2013-11-08 11:39:48| 205.7|  1.0|INFORM|Reading source feature # 552500
+2013-11-08 11:39:49| 206.7|  1.0|INFORM|Reading source feature # 555000
+2013-11-08 11:39:50| 207.6|  1.0|INFORM|Reading source feature # 557500
+2013-11-08 11:39:51| 208.6|  1.0|INFORM|Reading source feature # 560000
+2013-11-08 11:39:52| 209.5|  0.9|INFORM|Reading source feature # 562500
+2013-11-08 11:39:53| 210.4|  0.9|INFORM|Reading source feature # 565000
+2013-11-08 11:39:54| 211.4|  0.9|INFORM|Reading source feature # 567500
+2013-11-08 11:39:55| 212.3|  0.9|INFORM|Reading source feature # 570000
+2013-11-08 11:39:56| 213.3|  1.0|INFORM|Reading source feature # 572500
+2013-11-08 11:39:57| 214.2|  0.9|INFORM|Reading source feature # 575000
+2013-11-08 11:39:58| 215.2|  1.0|INFORM|Reading source feature # 577500
+2013-11-08 11:39:59| 216.1|  1.0|INFORM|Reading source feature # 580000
+2013-11-08 11:40:00| 217.1|  1.0|INFORM|Reading source feature # 582500
+2013-11-08 11:40:01| 218.0|  1.0|INFORM|Reading source feature # 585000
+2013-11-08 11:40:02| 219.0|  1.0|INFORM|Reading source feature # 587500
+2013-11-08 11:40:03| 219.9|  1.0|INFORM|Reading source feature # 590000
+2013-11-08 11:40:04| 220.9|  1.0|INFORM|Reading source feature # 592500
+2013-11-08 11:40:05| 221.8|  1.0|INFORM|Reading source feature # 595000
+2013-11-08 11:40:06| 222.8|  1.0|INFORM|Reading source feature # 597500
+2013-11-08 11:40:07| 223.7|  1.0|INFORM|Reading source feature # 600000
+2013-11-08 11:40:08| 224.7|  1.0|INFORM|Reading source feature # 602500
+2013-11-08 11:40:09| 225.6|  1.0|INFORM|Reading source feature # 605000

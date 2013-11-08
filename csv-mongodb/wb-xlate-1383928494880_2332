@@ -5,7 +5,7 @@
 #    Command-line to run this workspace:
 #    
 #    
-#    fme.exe csv2filegdb.fmw
+#    fme.exe wb-xlate-1383928494880_2332
 #          --SourceDataset_CSV D:\temp\forma_temp\formaAll_2013-10-24_600.csv
 #          --DestDataset_FILEGDB D:\temp\forma_temp\fgdb\ALL_COUNTRIES.gdb
 #          --DestDataset_FILEGDB_3 D:\temp\forma_temp\fgdb\country.fgdb
@@ -13,7 +13,7 @@
 #    
 #! PASSWORD=""
 #! GRID_VISIBLE="false"
-#! VIEW_POSITION="0 -206"
+#! VIEW_POSITION="0 0"
 #! SHOW_INFO_NODES="true"
 #! ATTR_TYPE_ENCODING="SDF"
 #! FME_STROKE_MAX_DEVIATION="0"
@@ -40,7 +40,7 @@
 #! SOURCE_ROUTING_FILE=""
 #! DESTINATION_ROUTING_FILE=""
 #! DESTINATION="NONE"
-#! LAST_SAVE_DATE="2013-11-08T11:35:53"
+#! LAST_SAVE_DATE="2013-11-08T11:34:56"
 #! FME_IMPLICIT_CSMAP_REPROJECTION_MODE="Auto"
 #! WORKSPACE_VERSION="1"
 #! SOURCE="NONE"
@@ -77,7 +77,7 @@
 #! ENABLED="true"
 #! DYNAMIC_FEATURE_TYPES_LIST_ON_MERGE="true"
 #! GENERATE_FME_BUILD_NUM="13499"
-#! MAX_FEATURES=""
+#! MAX_FEATURES="100000"
 #! COORDSYS=""
 #! MIN_FEATURES=""
 #! FEATURE_TYPES=""
@@ -683,7 +683,7 @@
 #! IDENTIFIER="1"
 #! FEAT_GEOMTYPE="csv_none"
 #! POSITION="200 -200"
-#! ORDER="5"
+#! ORDER="4"
 #! COLLAPSED="false"
 #! KEYWORD="CSV_1"
 #! ENABLED="true"
@@ -719,7 +719,7 @@
 #! IDENTIFIER="2"
 #! FEAT_GEOMTYPE="geodb_point"
 #! POSITION="2556 -265"
-#! ORDER="6"
+#! ORDER="5"
 #! COLLAPSED="true"
 #! KEYWORD="FILEGDB_1"
 #! ENABLED="true"
@@ -760,7 +760,7 @@
 #! IDENTIFIER="10"
 #! FEAT_GEOMTYPE="geodb_point"
 #! POSITION="2538 -659"
-#! ORDER="11"
+#! ORDER="10"
 #! COLLAPSED="true"
 #! KEYWORD="FILEGDB_2"
 #! ENABLED="true"
@@ -819,7 +819,7 @@
 #! IDENTIFIER="12"
 #! COMMENT_VALUE="Country Fanout"
 #! POSITION="2518 -559"
-#! ORDER="9"
+#! ORDER="8"
 #! FOLLOW_ANCHOR="true"
 #! INFO_NODE="false"
 #! COMMENT_TYPE="REGULAR"
@@ -829,7 +829,7 @@
 #! IDENTIFIER="13"
 #! COMMENT_VALUE="All"
 #! POSITION="2536 -165"
-#! ORDER="10"
+#! ORDER="9"
 #! FOLLOW_ANCHOR="true"
 #! INFO_NODE="false"
 #! COMMENT_TYPE="REGULAR"
@@ -846,7 +846,7 @@
 #! TYPE="2DPointAdder"
 #! VERSION="2"
 #! POSITION="1171 -372"
-#! ORDER="7"
+#! ORDER="6"
 #! PARMS_EDITED="true"
 #! ENABLED="true"
 #! >
@@ -880,7 +880,7 @@
 #! TYPE="DateFormatter"
 #! VERSION="3"
 #! POSITION="1515 -789"
-#! ORDER="8"
+#! ORDER="7"
 #! PARMS_EDITED="true"
 #! ENABLED="true"
 #! >
@@ -959,6 +959,9 @@
 #! </LOOKUP_TABLES>
 #! </WORKSPACE>
 #! 
+MACRO FME_MF_NAME csv2filegdb.fmw
+MACRO FME_MF_NAME_MASTER csv2filegdb.fmw
+
 GUI IGNORE SourceDataset_CSV_1,_SKIP_LINES_CSV_1,_SKIP_FOOTER_CSV_1,_STRIP_QUOTES_CSV_1,_DUPLICATE_DELIMS_CSV_1,_ENCODING_CSV_1,DestDataset_FILEGDB_1,FILEGDB_OUT_OVERWRITE_GEODB_FILEGDB_1,DestDataset_FILEGDB_2,FILEGDB_OUT_OVERWRITE_GEODB_FILEGDB_2
 
 
@@ -1122,6 +1125,7 @@ CSV_1_READER_META_ATTRIBUTES fme_feature_type
 
 # -------------------------------------------------------------------------
 
+CSV_1_MAX_FEATURES 100000
 FILEGDB_1_COORDINATE_SYSTEM LL84
 MULTI_READER_CONTINUE_ON_READER_FAILURE No
 
@@ -1143,10 +1147,12 @@ CSV_1_DEF CSV   UNIQUE_ID_STR                char(24)   UNIQUE_ID               
 Lookup ___KnownFeatureTypes___   CSV yes   "" no
 # -------------------------------------------------------------------------
 
-FACTORY_DEF * TestFactory   FACTORY_NAME "Unexpected Input Remover"   INPUT FEATURE_TYPE *   TEST @Lookup(___KnownFeatureTypes___,@FeatureType()) == yes   OUTPUT PASSED FEATURE_TYPE *
+FACTORY_DEF * TestFactory   FACTORY_NAME "Unexpected Input Remover"   INPUT FEATURE_TYPE *   TEST @Lookup(___KnownFeatureTypes___,@FeatureType()) == yes   OUTPUT PASSED FEATURE_TYPE *   OUTPUT FAILED FEATURE_TYPE *     @LogCount("UnexpectedInput @FeatureType()")     @FeatureType(__TO_REMOVE__)
+FACTORY_DEF * TeeFactory   FACTORY_NAME "Unexpected Input Remover Nuker"   INPUT FEATURE_TYPE __TO_REMOVE__
 # -------------------------------------------------------------------------
 
 FACTORY_DEF * TeeFactory    FACTORY_NAME "Source -> Generic"    INPUT FEATURE_TYPE *    OUTPUT FEATURE_TYPE *       @Transform(CSV,FME_GENERIC,ALIAS_GEOMETRY)
+FACTORY_DEF * TeeFactory   FACTORY_NAME "CSV Feature Counter -1 5"   INPUT FEATURE_TYPE CSV   OUTPUT FEATURE_TYPE *     @LogCount("LINK -1 5")
 DEFAULT_MACRO WB_CURRENT_CONTEXT
 # -------------------------------------------------------------------------
 
@@ -1155,12 +1161,15 @@ FACTORY_DEF * TestFactory    FACTORY_NAME 2DPointAdder_GeomFilter    INPUT  FEAT
 FACTORY_DEF * TeeFactory    FACTORY_NAME 2DPointAdder     INPUT FEATURE_TYPE 2DPointAdder___ValidGeoms___     OUTPUT FEATURE_TYPE 2DPointAdder_OUTPUT         @Dimension(2)         @Tcl2("FME_Coordinates addCoord {@Value(LON)} {@Value(LAT)}")         @GeometryType(fme_polygon)
 FACTORY_DEF * TeeFactory    FACTORY_NAME 2DPointAdder_WarnInvalids    INPUT FEATURE_TYPE 2DPointAdder___InvalidGeoms___    OUTPUT FEATURE_TYPE 2DPointAdder_OUTPUT @Tcl2("FME_LogMessage fme_warn 818064 2DPointAdder")
 
+FACTORY_DEF * TeeFactory   FACTORY_NAME "2DPointAdder_OUTPUT Feature Counter -1 8"   INPUT FEATURE_TYPE 2DPointAdder_OUTPUT   OUTPUT FEATURE_TYPE *     @LogCount("LINK -1 8")
 # -------------------------------------------------------------------------
 
 Tcl2 proc DateFormatter_formatter {} {     catch {       set dateFormat {FME Date/Time (%Y%m%d%H%M%S)};       if { [string compare $dateFormat {FME Date/Time (%Y%m%d%H%M%S)}] == 0 } {          set dateFormat {%Y%m%d%H%M%S};       } elseif { [string compare $dateFormat {FME Date (%Y%m%d)}] == 0} {          set dateFormat {%Y%m%d};       } elseif { [string compare $dateFormat {FME Time (%H%M%S)}] == 0} {          set dateFormat {%H%M%S};       } elseif { [string compare $dateFormat {XML Date (%Y-%m-%d)}] == 0} {          set dateFormat {%Y-%m-%d};       } elseif { [string compare $dateFormat {XML DateTime (%Y-%m-%dT%H:%M:%S)}] == 0} {          set dateFormat {%Y-%m-%dT%H:%M:%S};       } elseif { [string compare $dateFormat {XML Time (%H:%M:%S)}] == 0} {          set dateFormat {%H:%M:%S};       } elseif { [string compare $dateFormat {Locale Date (%c)}] == 0} {          set dateFormat {%c};       };       set attrs [split {DATE_RECORDED} {,}];       foreach attr $attrs {          set date [string trim [FME_GetAttribute $attr]];          set dateLen [string length $date];          set srcfmt {};          if {$dateLen > 0} {             set attrFull $attr;             append attrFull .full;             set fullDate [FME_GetAttribute $attrFull];             if {[string length $srcfmt] == 0} {                if { [string compare -length $dateLen $date $fullDate] == 0 } {                   set extra [string range $fullDate $dateLen end]000000;                   set date [string range \"$date$extra\" 0 13];                };                if {($dateLen == 14) && [regexp {^[0-9]*$} $date]} {                   set srcfmt %Y%m%d%H%M%S;                };             };          };          set sourceFormatOpt {};          if {[string length $srcfmt] > 0} {             set sourceFormatOpt \"-format $srcfmt\";          };          set seconds [eval clock scan "{$date}" $sourceFormatOpt];          FME_SetAttribute $attr [clock format $seconds -format $dateFormat];       };     } }
 FACTORY_DEF * TeeFactory    FACTORY_NAME DateFormatter    INPUT  FEATURE_TYPE 2DPointAdder_OUTPUT    OUTPUT FEATURE_TYPE DateFormatter_OUTPUT         @Tcl2(DateFormatter_formatter)
 
 FACTORY_DEF * TeeFactory   FACTORY_NAME "DateFormatter OUTPUT Splitter"   INPUT FEATURE_TYPE DateFormatter_OUTPUT   OUTPUT FEATURE_TYPE DateFormatter_OUTPUT_0   OUTPUT FEATURE_TYPE DateFormatter_OUTPUT_1
+FACTORY_DEF * TeeFactory   FACTORY_NAME "DateFormatter_OUTPUT_0 Feature Counter -1 9"   INPUT FEATURE_TYPE DateFormatter_OUTPUT_0   OUTPUT FEATURE_TYPE *     @LogCount("LINK -1 9")
+FACTORY_DEF * TeeFactory   FACTORY_NAME "DateFormatter_OUTPUT_1 Feature Counter -1 11"   INPUT FEATURE_TYPE DateFormatter_OUTPUT_1   OUTPUT FEATURE_TYPE *     @LogCount("LINK -1 11")
 # -------------------------------------------------------------------------
 
 FACTORY_DEF * TeeFactory    FACTORY_NAME "DateFormatter_OUTPUT_0 -> AllCountries Correlator"    INPUT FEATURE_TYPE DateFormatter_OUTPUT_0    OUTPUT FEATURE_TYPE __GO_TO_FINAL_OUTPUT_ROUTER__       multi_writer_id 0       @Reproject("LL84","LL84")       @Transform(FME_GENERIC,FILEGDB)       @SupplyAttributes(ENCODED,__wb_out_feat_type__,AllCountries)
