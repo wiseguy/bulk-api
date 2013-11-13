@@ -69,12 +69,12 @@ function parseCSV (file,startDate,fileNum,handler){
 
                      	var unique_id = row[0].toString() + ("0000"+row[1]).slice(-4) + ("0000"+row[2]).slice(-4) + ("0000"+row[3]).slice(-4) + ("0000"+row[4]).slice(-4);// + row[1].toString() + row[2].toString() +  row[3].toString();
                       	var unique_id_str = row[0].toString() + "_" +  ("0000"+row[1]).slice(-4) + "_" + ("0000"+row[2]).slice(-4) + "_" + ("0000"+row[3]).slice(-4) + "_" + ("0000"+row[4]).slice(-4);       
-
+                      	var date_recorded = dateIndexes[date_index].replace(/(\r\n|\n|\r)/gm,""); //remove line breaks
 		                    //console.log(unique_id);
 		                var insertRowCSVAll = "\n" + unique_id_str + "," + unique_id + "," + row[0] + "," + row[1] + "," + row[2] + "," + row[3] + ","
 		                	+ row[4] + "," + row[5] + "," + row[6] + "," + row[7] + ","
 		                    + row[8] + "," + row[9] + "," + row[10] + "," + row[11] + "," + threshold_probability + ","
-		                    + dateIndexes[date_index] + "," + date_index;
+		                    + date_recorded + "," + date_index;
 
 		                    fs.appendFileSync(outFileAll, insertRowCSVAll);
                 		

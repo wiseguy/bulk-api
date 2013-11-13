@@ -13,7 +13,7 @@
 #    
 #! PASSWORD=""
 #! GRID_VISIBLE="false"
-#! VIEW_POSITION="0 -206"
+#! VIEW_POSITION="0 0"
 #! SHOW_INFO_NODES="true"
 #! ATTR_TYPE_ENCODING="SDF"
 #! FME_STROKE_MAX_DEVIATION="0"
@@ -40,7 +40,7 @@
 #! SOURCE_ROUTING_FILE=""
 #! DESTINATION_ROUTING_FILE=""
 #! DESTINATION="NONE"
-#! LAST_SAVE_DATE="2013-11-08T11:35:53"
+#! LAST_SAVE_DATE="2013-11-11T11:06:53"
 #! FME_IMPLICIT_CSMAP_REPROJECTION_MODE="Auto"
 #! WORKSPACE_VERSION="1"
 #! SOURCE="NONE"
@@ -110,7 +110,7 @@
 #! ATTR_INDEX_TYPES="indexed"
 #! ATTR_NAME_INVALID_CHARS="\\&quot;:?*&lt;&gt;|[%# &apos;&amp;+-].^\{\}"
 #! SUPPORTS_FEATURE_TYPE_FANOUT="true"
-#! ENABLED="true"
+#! ENABLED="false"
 #! DYNAMIC_FEATURE_TYPES_LIST_ON_MERGE="true"
 #! GENERATE_FME_BUILD_NUM="13499"
 #! FANOUT_PREFIX=""
@@ -722,7 +722,7 @@
 #! ORDER="6"
 #! COLLAPSED="true"
 #! KEYWORD="FILEGDB_1"
-#! ENABLED="true"
+#! ENABLED="false"
 #! FANOUT="No"
 #! FANOUT_ID_ATTR=""
 #! >
@@ -913,6 +913,15 @@
 #! </TRANSFORMERS>
 #! <FEAT_LINKS>
 #! <FEAT_LINK
+#! IDENTIFIER="9"
+#! SOURCE_NODE="7"
+#! TARGET_NODE="2"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="-1"
+#! ENABLED="false"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
 #! IDENTIFIER="5"
 #! SOURCE_NODE="1"
 #! TARGET_NODE="4"
@@ -927,15 +936,6 @@
 #! TARGET_NODE="7"
 #! SOURCE_PORT_DESC="fo 0"
 #! TARGET_PORT_DESC="fi 0"
-#! ENABLED="true"
-#! EXTRA_POINTS=""
-#! />
-#! <FEAT_LINK
-#! IDENTIFIER="9"
-#! SOURCE_NODE="7"
-#! TARGET_NODE="2"
-#! SOURCE_PORT_DESC="fo 0"
-#! TARGET_PORT_DESC="-1"
 #! ENABLED="true"
 #! EXTRA_POINTS=""
 #! />
@@ -986,7 +986,7 @@ READER_GEN_DIRECTIVES _DUPLICATE_DELIMS,no,_IN_FIELD_NAMES,YES,SCAN_MAX_FEATURES
 WRITER_TYPE MULTI_WRITER
 MULTI_WRITER_DATASET_ORDER BY_ID
 MULTI_WRITER_FIRST_WRITER_ID 0
-MULTI_WRITER_TYPE{0} FILEGDB
+MULTI_WRITER_TYPE{0} NULL
 MULTI_WRITER_KEYWORD{0} FILEGDB_1
 MULTI_WRITER_TYPE{1} MULTI_WRITER
 MULTI_WRITER_KEYWORD{1} FILEGDB_2_FANOUT
@@ -1161,9 +1161,10 @@ Tcl2 proc DateFormatter_formatter {} {     catch {       set dateFormat {FME Dat
 FACTORY_DEF * TeeFactory    FACTORY_NAME DateFormatter    INPUT  FEATURE_TYPE 2DPointAdder_OUTPUT    OUTPUT FEATURE_TYPE DateFormatter_OUTPUT         @Tcl2(DateFormatter_formatter)
 
 FACTORY_DEF * TeeFactory   FACTORY_NAME "DateFormatter OUTPUT Splitter"   INPUT FEATURE_TYPE DateFormatter_OUTPUT   OUTPUT FEATURE_TYPE DateFormatter_OUTPUT_0   OUTPUT FEATURE_TYPE DateFormatter_OUTPUT_1
+FACTORY_DEF * TeeFactory   FACTORY_NAME "DateFormatter_OUTPUT_0 Disabled Nuker -1 9"   INPUT FEATURE_TYPE DateFormatter_OUTPUT_0
 # -------------------------------------------------------------------------
 
-FACTORY_DEF * TeeFactory    FACTORY_NAME "DateFormatter_OUTPUT_0 -> AllCountries Correlator"    INPUT FEATURE_TYPE DateFormatter_OUTPUT_0    OUTPUT FEATURE_TYPE __GO_TO_FINAL_OUTPUT_ROUTER__       multi_writer_id 0       @Reproject("LL84","LL84")       @Transform(FME_GENERIC,FILEGDB)       @SupplyAttributes(ENCODED,__wb_out_feat_type__,AllCountries)
+FACTORY_DEF * TeeFactory    FACTORY_NAME "DateFormatter_OUTPUT_0 -> AllCountries Correlator"    INPUT FEATURE_TYPE DateFormatter_OUTPUT_0
 # -------------------------------------------------------------------------
 
 FACTORY_DEF * TeeFactory    FACTORY_NAME "DateFormatter_OUTPUT_1 -> FORMA Correlator"    INPUT FEATURE_TYPE DateFormatter_OUTPUT_1    OUTPUT FEATURE_TYPE __GO_TO_FINAL_OUTPUT_ROUTER__       multi_writer_id 1       @Transform(FME_GENERIC,FILEGDB)       @SupplyAttributes(ENCODED,fme_template_feature_type,FORMA)       @CopyAttributes(__wb_out_feat_type__,ISO3)
@@ -1175,6 +1176,5 @@ FACTORY_DEF * TestFactory   FACTORY_NAME "Final Output Feature Type Router"   IN
 FACTORY_DEF * TeeFactory   FACTORY_NAME "Final Output Nuker"   INPUT FEATURE_TYPE __nuke_me__
 
 # -------------------------------------------------------------------------
-FILEGDB_1_DEF AllCountries   filegdb_type                 geodb_point   filegdb_xy_tolerance         ""   filegdb_z_tolerance          0.001   filegdb_object_id_field      OBJECTID   filegdb_shape_alias          SHAPE   filegdb_truncate_table       NO   filegdb_object_id_alias      OBJECTID   filegdb_config_keyword       DEFAULTS   filegdb_drop_table           NO   filegdb_shape_field          SHAPE   UNIQUE_ID_STR                text(2048)   UNIQUE_ID                    text(2048)   RES                          text(2048)   TILEH                        text(2048)   TILEV                        text(2048)   COL                          text(2048)   ROW                          text(2048)   LAT                          text(2048)   LON                          text(2048)   ISO3                         text(2048)   PERC_TREE_COVER              text(2048)   ADM_REGION                   text(2048)   ECO_REGION                   text(2048)   MATT_HANSEN_DEFOR            text(2048)   PROBABILITY                  text(2048)   DATE_RECORDED                text(2048)   DATE_INDEX                   text(2048)
 # -------------------------------------------------------------------------
 FILEGDB_2_DEF FORMA   filegdb_type                 geodb_point   filegdb_xy_tolerance         ""   filegdb_z_tolerance          0.001   filegdb_object_id_field      OBJECTID   filegdb_shape_alias          SHAPE   filegdb_truncate_table       NO   filegdb_object_id_alias      OBJECTID   filegdb_config_keyword       DEFAULTS   filegdb_drop_table           NO   filegdb_shape_field          SHAPE   UNIQUE_ID_STR                text(2048)   UNIQUE_ID                    text(2048)   RES                          text(2048)   TILEH                        text(2048)   TILEV                        text(2048)   COL                          text(2048)   ROW                          text(2048)   LAT                          text(2048)   LON                          text(2048)   ISO3                         text(2048)   PERC_TREE_COVER              text(2048)   ADM_REGION                   text(2048)   ECO_REGION                   text(2048)   MATT_HANSEN_DEFOR            text(2048)   PROBABILITY                  text(2048)   DATE_RECORDED                text(2048)   DATE_INDEX                   text(2048)
