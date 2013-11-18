@@ -11,7 +11,8 @@ csvToRead = "d:/temp/forma_temp/formaAll_2013-10-24_600.csv"
 arcpy.CreateFileGDB_management(out_path, fgdbName)
 
 env.workspace = out_path + "/" + fgdbName
-arcpy.CreateFeatureclass_management(env.workspace, fcName, "POINT", "", "DISABLED", "DISABLED", "")
+sr = arcpy.SpatialReference(4326)
+arcpy.CreateFeatureclass_management(env.workspace, fcName, "POINT", "", "DISABLED", "DISABLED", sr)
 arcpy.AddField_management("ALL_COUNTRIES", "UNIQUE_ID_STR", "STRING", 50, "", "", "UNIQUE_ID_STR", "NULLABLE", "REQUIRED")
 arcpy.AddField_management("ALL_COUNTRIES", "UNIQUE_ID", "STRING", 50, "", "", "UNIQUE_ID", "NULLABLE", "REQUIRED")
 arcpy.AddField_management("ALL_COUNTRIES", "RES", "SHORT", 10, "", "", "RES", "NULLABLE", "REQUIRED")
