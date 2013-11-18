@@ -5,7 +5,7 @@ starttime = datetime.datetime.now()
 out_path = "d:/temp/forma_temp/fgdb"
 fgdbName = "ALL_COUNTRIES.gdb"
 fcName = "ALL_COUNTRIES"
-csvToRead = "d:/temp/forma_temp/formaAll_2013-10-24_600_sample_75k.csv"
+csvToRead = "d:/temp/forma_temp/formaAll_2013-10-24_600.csv"
 
 
 arcpy.CreateFileGDB_management(out_path, fgdbName)
