@@ -64,49 +64,7 @@ define([
                     sliderStyle: "small"
                 });
 
-                //add default basemap
-                var basemap = new ArcGISTiledMapServiceLayer(config.basemap);
-                _self.map.addLayer(basemap);
-
-                //add Basemap Selector
-                var basemapGallery = new BasemapGallery({
-                    showArcGISBasemaps: true,
-                    map: _self.map
-                }, "basemapGallery");
-
-
-
-                var customBasemapLayer = new BasemapLayer({
-                    url:config.basemap
-                    ,isReference:false
-                })
-                var customBasemapRefLayer = new BasemapLayer({
-                    url:config.basemapReference
-                    ,isReference:true
-                })
-
-                var customBasemap = new Basemap({
-                    layers: [customBasemapLayer,customBasemapRefLayer],
-                    title: "Shaded Relief",
-                    thumbnailUrl:"app/images/shadedRelief.png",
-                    id:"basemap_default"
-                });
-
-                basemapGallery.add(customBasemap);
-                basemapGallery.startup();
-
-                basemapGallery.select("basemap_default");
-
-                basemapGallery.on("selection-change", function() {
-                  // remove all basemap layers                                    
-                  array.forEach(_self.map.basemapLayerIds, function(bid) {
-                    var l = _self.map.getLayer(bid);
-                    if ( l ) {
-                        _self.map.removeLayer(l);
-                    }
-                })
-                  
-              })
+                
 
                 var sfs = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                     new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
@@ -218,6 +176,51 @@ define([
                     //alert(viewModel.currentCountrySelected())
 
                 })
+
+
+                //add default basemap
+                var basemap = new ArcGISTiledMapServiceLayer(config.basemap);
+                _self.map.addLayer(basemap);
+
+                //add Basemap Selector
+                var basemapGallery = new BasemapGallery({
+                    showArcGISBasemaps: true,
+                    map: _self.map
+                }, "basemapGallery");
+
+
+
+                var customBasemapLayer = new BasemapLayer({
+                    url:config.basemap
+                    ,isReference:false
+                })
+                var customBasemapRefLayer = new BasemapLayer({
+                    url:config.basemapReference
+                    ,isReference:true
+                })
+
+                var customBasemap = new Basemap({
+                    layers: [customBasemapLayer,customBasemapRefLayer],
+                    title: "Shaded Relief",
+                    thumbnailUrl:"app/images/shadedRelief.png",
+                    id:"basemap_default"
+                });
+
+                basemapGallery.add(customBasemap);
+                basemapGallery.startup();
+
+                basemapGallery.select("basemap_default");
+
+                basemapGallery.on("selection-change", function() {
+                  // remove all basemap layers                                    
+                  array.forEach(_self.map.basemapLayerIds, function(bid) {
+                    var l = _self.map.getLayer(bid);
+                    if ( l ) {
+                        _self.map.removeLayer(l);
+                    }
+                })
+                  
+              })
 
 
 },

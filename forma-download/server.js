@@ -1,11 +1,12 @@
 var portApp = 8080;//8080,process.env.PORT;
+//var portApp = process.env.PORT;
 var downloadURL = "http://alb/formaDownloads/";
-//http://gis-stage.wri.org/formaDownloads/
-//http://alb/formaDownloads/
+//var downloadURL = "http://gis-stage.wri.org/formaDownloads/";
 var host = "127.0.0.1";//for mongodb
 var dbName = "forma20131024";
 var datesFile = __dirname+"\\datesIndex_2013-10-24.csv";
 
+var findRemoveSync = require('find-remove');
 var fs = require("fs");
 var url = require('url');
 var nodemailer = require("nodemailer");
@@ -19,6 +20,12 @@ var csv2json = require("csv-to-json");
 var AdmZip = require("adm-zip");
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
+
+var outCSVFolder =  __dirname+"\\outputCSV";
+var outFGDBfolder = __dirname+"\\outputFGDB";
+var outSHPfolder = __dirname+"\\outputSHP";
+var outKMLfolder = __dirname+"\\outputKML";
+var outZip = __dirname+"\\outputZip";
 
 
 
@@ -41,7 +48,7 @@ app.use(express.bodyParser());
 db.open(function(){
 	console.log("database connected. API ready");
 	console.log("Connected to mongodb on " + host + ":" + port);
-
+})//db.open
 
 app.get("/forma-download/api",function(request,response){
 
@@ -61,16 +68,13 @@ app.get("/forma-download/api",function(request,response){
 
 	var random = Math.random()*100000000000000000;	
     
-    var outCSVFolder =  __dirname+"\\outputCSV\\";
-    var outFGDBfolder = __dirname+"\\outputFGDB\\";
-	var outSHPfolder = __dirname+"\\outputSHP\\";
-	var outKMLfolder = __dirname+"\\outputKML\\";
+    
 
 	var outCSVFilename = "forma_"+iso3+"_"+random+".csv";
-	var outFile = outCSVFolder+outCSVFilename;
+	var outFile = outCSVFolder+ "\\" + outCSVFilename;
 
 
-	var outZip = __dirname+"\\outputZip";
+	
 	var startDate = new Date();
 
 	var data = {
@@ -97,10 +101,12 @@ app.get("/forma-download/api",function(request,response){
 
 
 	executeDownload(response,data);
+
+	removeOldData();
 	
 })//espress get
 
-})//db.open
+
 
 var server = app.listen(portApp);
 
@@ -109,6 +115,22 @@ server.on('connection', function(socket) {
   socket.setTimeout(1800 * 1000); 
   // 1800 second timeout. Change this as you see fit.
 })
+
+
+function removeOldData() {
+	
+	var result1 = findRemoveSync(outCSVFolder, {age: {seconds: 172800}, files: '*.*', ignore: '.gitignore'});	
+	var result2 = findRemoveSync(outFGDBfolder, {age: {seconds: 172800}, files: '*.*', ignore: '.gitignore'});
+	var result3 = findRemoveSync(outSHPfolder, {age: {seconds: 172800}, files: '*.*', ignore: '.gitignore'});
+	var result4 = findRemoveSync(outKMLfolder, {age: {seconds: 172800}, files: '*.*', ignore: '.gitignore'});
+	var result5 = findRemoveSync(outZip, {age: {seconds: 172800}, files: '*.*', ignore: '.gitignore'});
+	console.log("Deleting these Files older than 48 hours :");
+	console.log(result1);
+	console.log(result2);
+	console.log(result3);
+	console.log(result4);
+	console.log(result5);
+}
 
 function executeDownload(response,data) {
 
@@ -134,17 +156,17 @@ function executeDownload(response,data) {
 
 
 
-if (!db.serverConfig.isConnected()) {
-	//try connectng again
-	db.open(function(){
-	console.log("database connected. API ready");
-	console.log("Connected to mongodb on " + host + ":" + port);
-	executeDownload(response,data)
-	//executeDownload();//test
-	})
+// if (!db.serverConfig.isConnected()) {
+// 	//try connectng again
+// 	db.open(function(){
+// 	console.log("database connected. API ready");
+// 	console.log("Connected to mongodb on " + host + ":" + port);
+// 	executeDownload(response,data)
+// 	//executeDownload();//test
+// 	})
 
-	//return;
-}
+// 	//return;
+// }
 //db.open(function(error){
 	
 
@@ -259,11 +281,11 @@ if (!db.serverConfig.isConnected()) {
 							//var shpFolder = "FORMA_SHP" + random;
 							
 						 	
-						 	fs.mkdirSync(outFGDBfolder + gdbFolder);
+						 	fs.mkdirSync(outFGDBfolder + "\\" + gdbFolder);
 
 
 						 	//fs.mkdirSync(outSHPfolder + shpFolder);							
-							var exportLine = 'python "' + __dirname + '\\exportgdb.py" "' + __dirname + '" "' + outFile +  '" ' + random + ' ' + iso3;	
+							var exportLine = 'python "' + __dirname + '\\exportgdbfix.py" "' + __dirname + '" "' + outFile +  '" ' + random + ' ' + iso3;	
 
 
 
@@ -276,7 +298,7 @@ if (!db.serverConfig.isConnected()) {
 	                                    console.log('stderr: ' + stderr);
 
 	                                    //var filegdb = "FORMA_OUTPUT"+random+".gdb"
-	                                    var filegdbPath = outFGDBfolder + gdbFolder;	                                    
+	                                    var filegdbPath = outFGDBfolder + "\\" + gdbFolder;	                                    
 	                                    
 	                                    var endDate = new Date();
 	                                    console.log("Read ", forma.length + " records from MongoDB");
@@ -366,9 +388,9 @@ if (!db.serverConfig.isConnected()) {
 							var projectionText = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]";					
 						 	
 						 	console.log(shpFolder);
-						 	fs.mkdirSync(outSHPfolder + shpFolder);
+						 	fs.mkdirSync(outSHPfolder +"\\"+ shpFolder);
 						 	console.log("Created Projection file");
-						 	fs.appendFileSync(outSHPfolder + shpFolder+"\\"+ shpFolder +".prj", projectionText);
+						 	fs.appendFileSync(outSHPfolder +"\\"+ shpFolder+"\\"+ shpFolder +".prj", projectionText);
 							var exportLine = 'python "' + __dirname + '\\exportshp.py" "' + __dirname + '" "'  + outFile +  '" ' + random + ' ' + iso3;
 						 	//execute shapefile python
 						    exec(exportLine,
@@ -376,7 +398,7 @@ if (!db.serverConfig.isConnected()) {
 	                                    console.log('stdout: ' + stdout);
 	                                    console.log('stderr: ' + stderr);
 	                                   // var filegdb = "FORMA_OUTPUT"+random+".shp"
-	                                    var shpPath = outSHPfolder + shpFolder;
+	                                    var shpPath = outSHPfolder +"\\"+ shpFolder;
 	                                    
 	                                    
 	                                    var endDate = new Date();
@@ -472,7 +494,7 @@ if (!db.serverConfig.isConnected()) {
 							};
 							//console.log("kmlFile");
 							//console.log(outKMLfolder);
-							var kmlFile = outKMLfolder + "FORMA_OUTPUT"+random+".kml";
+							var kmlFile = outKMLfolder + "\\"+ "FORMA_OUTPUT"+random+".kml";
 							//console.log(kmlFile);
 							var rowCount = 0;
 							//console.log("kml");
@@ -535,7 +557,8 @@ if (!db.serverConfig.isConnected()) {
 				}
 			});
 		})
-
+	
+		console.log("processing");
 
 	})//db.collection
 //}//open handler
