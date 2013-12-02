@@ -61,7 +61,7 @@ with open(inputCSV, 'rU') as csvfile:
             cursor.insertRow([xy,row[0],int(row[1]),int(row[2]),int(row[3]),int(row[4]),int(row[5]),float(row[6]),float(row[7]),row[8],int(row[9]),int(row[10]),int(row[11]),int(row[12]),row[13]])           
 
         i = i + 1
-        print i   
+        #print i   
 
    
 del cursor

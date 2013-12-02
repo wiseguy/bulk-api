@@ -4,6 +4,9 @@ db.forma.remove()
 
 db.dropDatabase()
 
+db.forma.ensureIndex({ISO3:1})
+db.forma.ensureIndex({ADM_REGION:1})
+db.forma.ensureIndex({PROBABILITY:1})
 db.forma.ensureIndex({ISO3:1,ADM_REGION:1,PROBABILITY:1})
 
 db.forma.count({"PROBABILITY":{$gte:55,$lte:100},"ISO3":"ARG"},{"PROBABILITY":{$slice:[14,10]}})

@@ -2,8 +2,9 @@
 
 
 import shapefile as shp
-import csv
+import csv, datetime
 import sys
+starttime = datetime.datetime.now()
 
 #out_file = 'outputSHP/formaAll.shp'
 workingDir = sys.argv[1]
@@ -20,8 +21,8 @@ out_path = workingDir + '//outputSHP//' +  shpFolder + '//{0}.shp'
 systemArgs = sys.argv;
 #systemArgs=['ARG','PRY','MDG','AUS','BOL','PER','UNK','PNG','TZA','COD','RWA','ECU','GAB','COG','KEN','COL','UGA','MYS','CMR','VEN','SUR','GUF','CAF','BRN','CIV','NGA','LBR','PHL','GUY','GHA','THA','SLE','GIN','PAN','TGO','IND','CRI','VNM','MMR','KHM','NIC','GTM','MTQ','LAO','MEX','HND','CHN','HTI','BGD','TWN','BTN','NPL']#,'BRA','IDN'
 
-for arg in systemArgs:
-    print arg
+# for arg in systemArgs:
+#     print arg
 
 #Set up blank lists for data
 x,y,id_no,date,target=[],[],[],[],[]
@@ -88,3 +89,8 @@ for j,k in enumerate(x):
        
 
 w.save(out_path.format(shapefilename))
+
+endtime = datetime.datetime.now()
+print "Started At : " + str(starttime)
+print "Ended At : " + str(endtime)
+print "Time : " + str(endtime - starttime)

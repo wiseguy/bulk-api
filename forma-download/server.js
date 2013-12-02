@@ -294,8 +294,8 @@ function executeDownload(response,data) {
 						    exec(exportLine,
 
 	                                  function (error, stdout, stderr) {
-	                                    console.log('stdout: ' + stdout);	
-	                                    console.log('stderr: ' + stderr);
+	                                    // console.log('stdout: ' + stdout);	
+	                                    // console.log('stderr: ' + stderr);
 
 	                                    //var filegdb = "FORMA_OUTPUT"+random+".gdb"
 	                                    var filegdbPath = outFGDBfolder + "\\" + gdbFolder;	                                    
@@ -395,8 +395,8 @@ function executeDownload(response,data) {
 						 	//execute shapefile python
 						    exec(exportLine,
 	                                  function (error, stdout, stderr) {
-	                                    console.log('stdout: ' + stdout);
-	                                    console.log('stderr: ' + stderr);
+	                                    // console.log('stdout: ' + stdout);
+	                                    // console.log('stderr: ' + stderr);
 	                                   // var filegdb = "FORMA_OUTPUT"+random+".shp"
 	                                    var shpPath = outSHPfolder +"\\"+ shpFolder;
 	                                    
