@@ -178,7 +178,7 @@ function executeDownload(response,data) {
 
 		//var query = {"PROBABILITY":{$gt:60}},{"PROBABILITY":{$slice:[0,3]};
 		console.log("iso3 : " + iso3);
-		console.log("regions : " + regions);
+		console.log("regions count : " + regions.length);
 		console.log("minProb : " + minProb);
 		console.log("maxProb : " + maxProb);
 		console.log("startDateIndex : " + startDateIndex);
@@ -195,7 +195,7 @@ function executeDownload(response,data) {
 		if (regions.length>0) {// if regions revceived use it
 			queryObj["ADM_REGION"]={$in: regions};
 		}
-		console.log(queryObj);
+		//console.log(queryObj);
 		collection.find(queryObj,{"PROBABILITY":{$slice:[startDateIndex,numberOfDates]}},function(error,cursor){
 			cursor.toArray(function(error,forma){
 				if (forma.length == 0){
@@ -236,10 +236,10 @@ function executeDownload(response,data) {
 							
 							var unique_id = forma[i].RES.toString() + "_" +  ("0000"+forma[i].TILEH).slice(-4) + "_" + ("0000"+forma[i].TILEV).slice(-4) + "_" + ("0000"+forma[i].COL).slice(-4) + "_" + ("0000"+forma[i].ROW).slice(-4);		
 							//forma[i].UNIQUE_ID.toString()
-							var insertRowCSV = "\n" + unique_id + "," + forma[i].RES + "," + forma[i].TILEH + "," + forma[i].TILEV + "," + forma[i].COL + ","
-	                                             + forma[i].ROW + "," + forma[i].LAT+ "," + forma[i].LON + "," + forma[i].ISO3 + ","
-	                                              + forma[i].PERC_TREE_COVER + "," + forma[i].ADM_REGION + "," + forma[i].ECO_REGION + ","
-	                                              + forma[i].PROBABILITY[k] + "," +  dateIndexes[startDateIndex+k].toString();//forma[i].DATE
+							var insertRowCSV = "\n" + unique_id + "," + (forma[i].RES || 0) + "," + (forma[i].TILEH || 0)   + "," + (forma[i].TILEV || 0) + "," + (forma[i].COL || 0) + ","
+	                                             + (forma[i].ROW || 0)+ "," + (forma[i].LAT || 0.0)+ "," + (forma[i].LON || 0.0) + "," + (forma[i].ISO3 || "NULL") + ","
+	                                              + (forma[i].PERC_TREE_COVER || 0) + "," + (forma[i].ADM_REGION || 0) + "," + (forma[i].ECO_REGION || 0) + ","
+	                                              + (forma[i].PROBABILITY[k] || 0) + "," +  dateIndexes[startDateIndex+k].toString();//forma[i].DATE
 							
 							
 							

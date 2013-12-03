@@ -849,7 +849,7 @@ dateSelects: function(){
 getDownloadLink: function (value) {
 
                 //first query gadm2 for gadm1 IDS
-                dojo.byId("resultsMessage").innerHTML = "";    
+                //dojo.byId("resultsMessage").innerHTML = "";    
                 dojo.removeClass(dojo.byId("downloadImg"),"dijitHidden");
                 console.log("download link");
 
