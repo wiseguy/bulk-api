@@ -116,6 +116,11 @@ server.on('connection', function(socket) {
   // 1800 second timeout. Change this as you see fit.
 })
 
+var collection;
+
+db.collection("forma",function(error, coll){
+	collection = coll;
+})//db.collection
 
 function removeOldData() {
 	
@@ -170,7 +175,7 @@ function executeDownload(response,data) {
 //db.open(function(error){
 	
 
-	db.collection("forma",function(error, collection){
+
 		//var query = {"PROBABILITY":{$gt:60}},{"PROBABILITY":{$slice:[0,3]};
 		console.log("iso3 : " + iso3);
 		console.log("regions : " + regions);
@@ -257,6 +262,8 @@ function executeDownload(response,data) {
 					switch (output) {
 //HANDLE CSV
 						case "csv":
+							console.log("CSV zip start"); 
+
 							var admzip = new AdmZip();
 							admzip.addLocalFile(outFile);	
 							admzip.writeZip(outZipFile);
@@ -287,7 +294,7 @@ function executeDownload(response,data) {
 						 	//fs.mkdirSync(outSHPfolder + shpFolder);							
 							var exportLine = 'python "' + __dirname + '\\exportgdbfix.py" "' + __dirname + '" "' + outFile +  '" ' + random + ' ' + iso3;	
 
-
+							console.log("Python GDB Creation start");
 
 							
 						 	//execute arcpy to create File Geodatabase
@@ -387,7 +394,8 @@ function executeDownload(response,data) {
 							var shpFolder = "FORMA_SHP" + random;	
 							var projectionText = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]";					
 						 	
-						 	console.log(shpFolder);
+						 	console.log("Python SHP Creation start");
+
 						 	fs.mkdirSync(outSHPfolder +"\\"+ shpFolder);
 						 	console.log("Created Projection file");
 						 	fs.appendFileSync(outSHPfolder +"\\"+ shpFolder+"\\"+ shpFolder +".prj", projectionText);
@@ -560,7 +568,7 @@ function executeDownload(response,data) {
 	
 		console.log("processing");
 
-	})//db.collection
+	
 //}//open handler
 //)//db.open
 
@@ -597,6 +605,7 @@ function sendResponse(responseData) {
 	}	
 
 	if (email) {
+		console.log("Sending Email");
 		var smtpTransport = nodemailer.createTransport("SMTP",{
 		    service: "Gmail",
 		    auth: {
@@ -610,7 +619,7 @@ function sendResponse(responseData) {
 		    from: "Blue Raster & WRI <aamirsul@gmail.com>", // sender address
 		    to: email, // list of receivers
 		    subject: "FORMA Download", // Subject line
-		    text: "Hello " + email +", Download the requested data from here : " + downloadLink // plaintext body
+		    text: "Hello " + email +", The requested data is available for 48 hours and can be downloaded from here : " + downloadLink // plaintext body
 		   //html: "<b>Hello world ✔</b>" // html body
 		}
 

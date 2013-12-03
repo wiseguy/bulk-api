@@ -55,16 +55,6 @@ define([
                 // parser.parse();
                 console.log("Main.initialize");
 
-                _self.map = new Map("map",{
-                    basemap: "topo",
-                    center: [0,0],
-                    zoom: 3,
-                    maxZoom: 14,
-                    minZoom: 2,
-                    sliderStyle: "small"
-                });
-
-                
 
                 var sfs = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                     new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
@@ -78,7 +68,66 @@ define([
                 var regionsSelectRender = new SimpleRenderer(sfs);
                 var regionsHighlightRender = new SimpleRenderer(sfsHighlight);
 
+                _self.map = new Map("map",{
+                    basemap: "topo",
+                    center: [0,0],
+                    zoom: 3,
+                    maxZoom: 14,
+                    minZoom: 2,
+                    sliderStyle: "small"
+                });
+
+                
+
+
+
                 on(_self.map,"load",function(){
+
+                    //add default basemap
+                var basemap = new ArcGISTiledMapServiceLayer(config.basemap);
+                _self.map.addLayer(basemap);
+
+                //add Basemap Selector
+                var basemapGallery = new BasemapGallery({
+                    showArcGISBasemaps: true,
+                    map: _self.map
+                }, "basemapGallery");
+
+
+
+                var customBasemapLayer = new BasemapLayer({
+                    url:config.basemap
+                    ,isReference:false
+                })
+                var customBasemapRefLayer = new BasemapLayer({
+                    url:config.basemapReference
+                    ,isReference:true
+                })
+
+                var customBasemap = new Basemap({
+                    layers: [customBasemapLayer,customBasemapRefLayer],
+                    title: "Shaded Relief",
+                    thumbnailUrl:"app/images/shadedRelief.png",
+                    id:"basemap_default"
+                });
+
+                basemapGallery.add(customBasemap);
+                basemapGallery.startup();
+
+                basemapGallery.select("basemap_default");
+
+                basemapGallery.on("selection-change", function() {
+                  // remove all basemap layers                                    
+                  array.forEach(_self.map.basemapLayerIds, function(bid) {
+                    var l = _self.map.getLayer(bid);
+                    if ( l ) {
+                        _self.map.removeLayer(l);
+                    }
+                })
+                  
+              })
+
+                
                     _self.GadmMap = new ArcGISDynamicMapServiceLayer(config.mapservice.url,config.mapservice.options);
                     _self.formaPoints = new ArcGISDynamicMapServiceLayer(config.formaPoints.url,config.formaPoints.options);
                     _self.CountryLayer = new FeatureLayer(config.countries.url, { mode: FeatureLayer.MODE_SELECTION, maxAllowableOffset: 2000 });
@@ -123,6 +172,7 @@ define([
                     var viewModel = function(){
                         var that = this;
                         this.currentCountrySelected = ko.observable(false);
+                        this.resultsMessage = ko.observable("");
                         this.currentRegionsGraphics = ko.observable(_self.RegionLayer.graphics);
                         this.selectedRegionClick = function(data, event){
                             var graphic = data;
@@ -178,49 +228,7 @@ define([
                 })
 
 
-                //add default basemap
-                var basemap = new ArcGISTiledMapServiceLayer(config.basemap);
-                _self.map.addLayer(basemap);
-
-                //add Basemap Selector
-                var basemapGallery = new BasemapGallery({
-                    showArcGISBasemaps: true,
-                    map: _self.map
-                }, "basemapGallery");
-
-
-
-                var customBasemapLayer = new BasemapLayer({
-                    url:config.basemap
-                    ,isReference:false
-                })
-                var customBasemapRefLayer = new BasemapLayer({
-                    url:config.basemapReference
-                    ,isReference:true
-                })
-
-                var customBasemap = new Basemap({
-                    layers: [customBasemapLayer,customBasemapRefLayer],
-                    title: "Shaded Relief",
-                    thumbnailUrl:"app/images/shadedRelief.png",
-                    id:"basemap_default"
-                });
-
-                basemapGallery.add(customBasemap);
-                basemapGallery.startup();
-
-                basemapGallery.select("basemap_default");
-
-                basemapGallery.on("selection-change", function() {
-                  // remove all basemap layers                                    
-                  array.forEach(_self.map.basemapLayerIds, function(bid) {
-                    var l = _self.map.getLayer(bid);
-                    if ( l ) {
-                        _self.map.removeLayer(l);
-                    }
-                })
-                  
-              })
+                
 
 
 },
@@ -413,13 +421,16 @@ initDownloader: function () {
         searchAttr: "name"
     }, dojo.byId("downloadSelect"));
 
+    _self.downloadSelectChange = _self.downloadSelect.on("change", function (value) {
+        config.viewModel.resultsMessage("");
+    });
+
     _self.downloadButton = new Button({
         label: "Download ▼",
         "class":"downloadButton"
     }, "downloadButton");
     _self.initDownloaderHandlers();
 },
-
 
 initSliderHandlers: function () {
     console.log("initSliderHandlers");
@@ -429,6 +440,7 @@ initSliderHandlers: function () {
                 //});
 
 _self.probSliderChange = _self.probSlider.on("change", function (value) {
+    config.viewModel.resultsMessage("");
     console.log( "prob: "+ value.toString());
 });
 },
@@ -436,6 +448,7 @@ _self.probSliderChange = _self.probSlider.on("change", function (value) {
 initSelectHandlers: function () {
     var _self = this;
     _self.countrySelectChange = _self.countrySelect.on("change", function (value) {
+        config.viewModel.resultsMessage("");
         if (value){
                         //alert("country " + value);
                         countryChange(value);
@@ -518,7 +531,7 @@ initSelectHandlers: function () {
 
 _self.regionDefinition = "";
 _self.stateSelect.on("change", function (value) {
-
+    config.viewModel.resultsMessage("");
 
     if (value) {
                         //alert("state " + value);
@@ -929,21 +942,32 @@ getDownloadLink: function (value) {
                          load: function(data){
                            // Set the data from the search into the viewbox in nicely formatted JSON
                            //targetNode.innerHTML = "<pre>" + dojo.toJson(data, true) + "</pre>";
-                           if (data.featureCount>0){
-                            dojo.byId("resultsMessage").innerHTML = "<a href='"+data.results+"' target='_blank'>Download Zip</a>";    
-                        } else {
-                            dojo.byId("resultsMessage").innerHTML = "No data found";    
+                            if (!validate.isEmailAddress(email)) {
+                                if (data.featureCount>0){
+                                    //dojo.byId("resultsMessage").innerHTML = "<a href='"+data.results+"' target='_blank'>Download Zip</a>"; 
+                                    config.viewModel.resultsMessage("<a href='"+data.results+"' target='_blank'>Download Zip</a>");   
+                                } else {
+                                    config.viewModel.resultsMessage("No data found");
+                                    //dojo.byId("resultsMessage").innerHTML = "No data found";    
+                                }
                         }
+                         
 
                         dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
                     },
                     error: function(error){
                            //targetNode.innerHTML = "An unexpected error occurred: " + error;
-                           dojo.byId("resultsMessage").innerHTML = "Error in download";
+                           //dojo.byId("resultsMessage").innerHTML = "Error in download";
+                           config.viewModel.resultsMessage("Error in download");
                            dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
                        }
                    };
                    dojo.io.script.get(jsonpArgs);
+                   if (validate.isEmailAddress(email)) {
+                           //dojo.byId("resultsMessage").innerHTML = "Data request started. On completion a download link will be sent to " + email;
+                           config.viewModel.resultsMessage("Data request started. On completion a download link will be sent to " + email);
+                           dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
+                        }
 
 
 

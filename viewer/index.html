@@ -24,6 +24,7 @@
 
     <script>
         var dojoConfig = {
+            cachebust:true,
             parseOnLoad: false,
             isDebug: false,
             async: true,
@@ -119,7 +120,7 @@
 
              <div class="container" id="downloadResultsContainer">
                  <div id="downloadImg" class="dijitHidden"><img src="app/images/downloading.gif"/></div>   
-                 <div id="resultsMessage"></div>
+                 <div id="resultsMessage" data-bind="html:resultsMessage"></div>
              </div>
              <div class="container" id="downloadButtonContainer" data-bind="css:{dijitHidden:currentRegionsGraphics().length==0}">
                     <button id="downloadButton" >GO</button>

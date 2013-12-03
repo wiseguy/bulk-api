@@ -2,7 +2,7 @@
 
 
 import shapefile as shp
-import csv, datetime
+import csv, datetime, gc
 import sys
 starttime = datetime.datetime.now()
 
@@ -89,6 +89,8 @@ for j,k in enumerate(x):
        
 
 w.save(out_path.format(shapefilename))
+
+gc.collect()
 
 endtime = datetime.datetime.now()
 print "Started At : " + str(starttime)

@@ -291,7 +291,7 @@ font-size: 12px;
         width: 270px;
     }
     .app #resultsMessage:hover{
-        text-decoration: underline;
+        /*text-decoration: underline;*/
     }
 
     .app .formSteps{

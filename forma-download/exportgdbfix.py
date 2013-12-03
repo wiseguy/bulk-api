@@ -1,4 +1,4 @@
-import arcpy, os, glob, string, csv, datetime, sys
+import arcpy, os, glob, string, csv, datetime, sys, gc
 from arcpy import env
 starttime = datetime.datetime.now()
 
@@ -65,6 +65,8 @@ with open(inputCSV, 'rU') as csvfile:
 
    
 del cursor
+
+gc.collect()
 
 endtime = datetime.datetime.now()
 print "Started At : " + str(starttime)
