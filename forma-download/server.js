@@ -158,22 +158,14 @@ function executeDownload(response,data) {
 	var outZip = data.outZip;
 	var startDate = data.startDate;
 
+	var noData = "";
+	//just sending a dummy response.. email when finished
+	response.write(callback + "({\"results\":\""+noData+"\",\"featureCount\":'0',\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+startDate.toString()+"\"})");
+	response.send();
 
-
-
-// if (!db.serverConfig.isConnected()) {
-// 	//try connectng again
-// 	db.open(function(){
-// 	console.log("database connected. API ready");
-// 	console.log("Connected to mongodb on " + host + ":" + port);
-// 	executeDownload(response,data)
-// 	//executeDownload();//test
-// 	})
-
-// 	//return;
-// }
-//db.open(function(error){
-	
+	if (!email) {
+		return;
+	}
 
 
 		//var query = {"PROBABILITY":{$gt:60}},{"PROBABILITY":{$slice:[0,3]};
@@ -203,9 +195,22 @@ function executeDownload(response,data) {
 					//response.send("No data found");
 					var noData = "";
 					var endDate = new Date();
-					response.write(callback + "({\"results\":\""+noData+"\",\"featureCount\":"+forma.length+",\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
-					response.send();
+
+					// response.write(callback + "({\"results\":\""+noData+"\",\"featureCount\":"+forma.length+",\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
+					// response.send();
 					//callback(false);
+					var responseData = {
+												response: response,
+												email: email,
+												requestType : requestType,
+												downloadLink: "",
+												startDate :startDate,
+												//endDate :endDate,
+												callback :callback,
+												totalRecords:0
+
+											}
+							sendResponse(responseData);
 				} else {
 					console.log("found ", forma.length + " records");
 					//callback(users[0]);
@@ -316,8 +321,8 @@ function executeDownload(response,data) {
 	                                    if (error !== null) {
 	                                      console.log('exec error: ' + error);
 	                                      //response.send("Error in exporting to File Geodatabase");
-	                                      response.write(callback + "({\"results\":\"Error in exporting to File Geodatabase\",\"featureCount\":0,\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
-	                                      response.send();
+	                                      // response.write(callback + "({\"results\":\"Error in exporting to File Geodatabase\",\"featureCount\":0,\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
+	                                      // response.send();
 	                                    } else {
 	                                    	//zip the files
 
@@ -418,8 +423,8 @@ function executeDownload(response,data) {
 	                                    if (error !== null) {
 	                                      console.log('exec error: ' + error);
 	                                      //response.send("Error in exporting to Shapefile");
-	                                      response.write(callback + "({\"results\":\"Error in exporting to Shapefile\",\"featureCount\":0,\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
-	                                      response.send();
+	                                      // response.write(callback + "({\"results\":\"Error in exporting to Shapefile\",\"featureCount\":0,\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
+	                                      // response.send();
 	                                    } else {
 	                                    	//zip the files
 
@@ -591,18 +596,18 @@ function sendResponse(responseData) {
 	var endDate = new Date();
 	//console.log(responseData);
 
-	console.log("sending response");
-	switch (requestType) {
-	case "json":
-		response.writeHead(200, {"Content-Type": "application/json"});
-		//response.send("Click to Download <a href = '"+downloadLink+"'>"+downloadLink+"</a> ");
-		response.write(callback + "({\"results\":\""+downloadLink+"\",\"featureCount\":"+totalRecords+",\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
-		response.send();	
-	break;
-	case "html":
-		response.send("Click to Download <a href = '"+downloadLink+"'>"+downloadLink+"</a> ");
-	break;
-	}	
+	// console.log("sending response");
+	// switch (requestType) {
+	// case "json":
+	// 	response.writeHead(200, {"Content-Type": "application/json"});
+	// 	//response.send("Click to Download <a href = '"+downloadLink+"'>"+downloadLink+"</a> ");
+	// 	response.write(callback + "({\"results\":\""+downloadLink+"\",\"featureCount\":"+totalRecords+",\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
+	// 	response.send();	
+	// break;
+	// case "html":
+	// 	response.send("Click to Download <a href = '"+downloadLink+"'>"+downloadLink+"</a> ");
+	// break;
+	// }	
 
 	if (email) {
 		console.log("Sending Email");
@@ -614,12 +619,19 @@ function sendResponse(responseData) {
 		    }
 		});
 
+		resultsMessage = "No data was found that matched your request."
+		
+		if (totalRecords>0) {
+			resultsMessage = "Hello " + email +", The requested data is available for 48 hours and can be downloaded from here : " + downloadLink; // plaintext body	
+		}
+		
+
 			// setup e-mail data with unicode symbols
 		var mailOptions = {
 		    from: "Blue Raster & WRI <aamirsul@gmail.com>", // sender address
 		    to: email, // list of receivers
 		    subject: "FORMA Download", // Subject line
-		    text: "Hello " + email +", The requested data is available for 48 hours and can be downloaded from here : " + downloadLink // plaintext body
+		    text: resultsMessage
 		   //html: "<b>Hello world ✔</b>" // html body
 		}
 

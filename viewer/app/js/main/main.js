@@ -942,15 +942,15 @@ getDownloadLink: function (value) {
                          load: function(data){
                            // Set the data from the search into the viewbox in nicely formatted JSON
                            //targetNode.innerHTML = "<pre>" + dojo.toJson(data, true) + "</pre>";
-                            if (!validate.isEmailAddress(email)) {
-                                if (data.featureCount>0){
-                                    //dojo.byId("resultsMessage").innerHTML = "<a href='"+data.results+"' target='_blank'>Download Zip</a>"; 
-                                    config.viewModel.resultsMessage("<a href='"+data.results+"' target='_blank'>Download Zip</a>");   
-                                } else {
-                                    config.viewModel.resultsMessage("No data found");
-                                    //dojo.byId("resultsMessage").innerHTML = "No data found";    
-                                }
-                        }
+                        //     if (!validate.isEmailAddress(email)) {
+                        //         if (data.featureCount>0){
+                        //             //dojo.byId("resultsMessage").innerHTML = "<a href='"+data.results+"' target='_blank'>Download Zip</a>"; 
+                        //             config.viewModel.resultsMessage("<a href='"+data.results+"' target='_blank'>Download Zip</a>");   
+                        //         } else {
+                        //             config.viewModel.resultsMessage("No data found");
+                        //             //dojo.byId("resultsMessage").innerHTML = "No data found";    
+                        //         }
+                        // }
                          
 
                         dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
@@ -966,8 +966,12 @@ getDownloadLink: function (value) {
                    if (validate.isEmailAddress(email)) {
                            //dojo.byId("resultsMessage").innerHTML = "Data request started. On completion a download link will be sent to " + email;
                            config.viewModel.resultsMessage("Data request started. On completion a download link will be sent to " + email);
-                           dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
+                           
+                        } else {
+                           config.viewModel.resultsMessage("Please enter a valid email address"); 
                         }
+
+                        dojo.addClass(dojo.byId("downloadImg"),"dijitHidden");
 
 
 
