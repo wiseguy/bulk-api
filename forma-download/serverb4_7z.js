@@ -14,8 +14,10 @@ var CSV = require("a-csv");
 var mongo = require("mongodb");
 var express = require("express");
 var sendmail = require('sendmail').sendmail;
+var walk    = require('walk');
+var archiver = require('archiver');	
 var csv2json = require("csv-to-json");
-
+var AdmZip = require("adm-zip");
 var exec = require('child_process').exec;
 
 
@@ -42,69 +44,69 @@ for (var index in json) {
         dateIndexes.push(json[index]["DATE\r"].toString())          //.replace(/-/g, '')
     }
 
-    var app = express();	
-    app.use(express.bodyParser());
-    app.enable('view cache');
+var app = express();	
+app.use(express.bodyParser());
+app.enable('view cache');
 
-    db.open(function(){
-    	console.log("database connected. API ready");
-    	console.log("Connected to mongodb on " + host + ":" + port);
+db.open(function(){
+	console.log("database connected. API ready");
+	console.log("Connected to mongodb on " + host + ":" + port);
 })//db.open
 
-    app.get("/forma-download/api",function(request,response){
+app.get("/forma-download/api",function(request,response){
 
-    	var url_parts = url.parse(request.url, true);
-    	var query = url_parts.query;
+	var url_parts = url.parse(request.url, true);
+	var query = url_parts.query;
+	
+	var callback = query["callback"];
+	var iso3 = query["country"].toString();
+	var regions = eval(query["regions"]) || [];
+	var minProb = parseInt(query["minProb"]);
+	var maxProb = parseInt(query["maxProb"]);
+	var startDateIndex = parseInt(query["startDateIndex"]);
+	var numberOfDates = parseInt(query["dateCount"]);
+	var requestType = query["f"].toString();
+	var output = query["output"].toString();
+	var email = query["email"];
 
-    	var callback = query["callback"];
-    	var iso3 = query["country"].toString();
-    	var regions = eval(query["regions"]) || [];
-    	var minProb = parseInt(query["minProb"]);
-    	var maxProb = parseInt(query["maxProb"]);
-    	var startDateIndex = parseInt(query["startDateIndex"]);
-    	var numberOfDates = parseInt(query["dateCount"]);
-    	var requestType = query["f"].toString();
-    	var output = query["output"].toString();
-    	var email = query["email"];
+	var random = Math.random()*100000000000000000;	
+    
+    
 
-    	var random = Math.random()*100000000000000000;	
-
-
-
-    	var outCSVFilename = "forma_"+iso3+"_"+random+".csv";
-    	var outFile = outCSVFolder+ "\\" + outCSVFilename;
-
-
-
-    	var startDate = new Date();
-
-    	var data = {
-    		callback:callback,
-    		iso3:iso3,
-    		regions:regions,
-    		minProb:minProb,
-    		maxProb:maxProb,
-    		startDateIndex:startDateIndex,
-    		numberOfDates:numberOfDates,
-    		requestType:requestType,
-    		output:output,
-    		email:email,
-    		random:random,
-    		outCSVFilename:outCSVFilename,
-    		outFile:outFile,
-    		outFGDBfolder:outFGDBfolder,
-    		outSHPfolder:outSHPfolder,
-    		outKMLfolder:outKMLfolder,
-    		outZip:outZip,
-    		startDate:startDate
-    	}
+	var outCSVFilename = "forma_"+iso3+"_"+random+".csv";
+	var outFile = outCSVFolder+ "\\" + outCSVFilename;
 
 
+	
+	var startDate = new Date();
 
-    	executeDownload(response,data);
+	var data = {
+		callback:callback,
+		iso3:iso3,
+		regions:regions,
+		minProb:minProb,
+		maxProb:maxProb,
+		startDateIndex:startDateIndex,
+		numberOfDates:numberOfDates,
+		requestType:requestType,
+		output:output,
+		email:email,
+		random:random,
+		outCSVFilename:outCSVFilename,
+		outFile:outFile,
+		outFGDBfolder:outFGDBfolder,
+		outSHPfolder:outSHPfolder,
+		outKMLfolder:outKMLfolder,
+		outZip:outZip,
+		startDate:startDate
+	}
 
-    	removeOldData();
 
+
+	executeDownload(response,data);
+
+	removeOldData();
+	
 })//espress get
 
 
@@ -112,8 +114,8 @@ for (var index in json) {
 var server = app.listen(portApp);
 
 server.on('connection', function(socket) {
-	console.log("A new connection was made by a client.");
-	socket.setTimeout(30 * 1000); 
+  console.log("A new connection was made by a client.");
+  socket.setTimeout(30 * 1000); 
   // 30 second timeout. Change this as you see fit.
 })
 
@@ -152,8 +154,8 @@ function executeDownload(response,data) {
 	var email = data.email;
 	var random = data.random;
 	var outCSVFilename = data.outCSVFilename;
-	var outFile = data.outFile;
-	var outFGDBfolder = data.outFGDBfolder;
+    var outFile = data.outFile;
+    var outFGDBfolder = data.outFGDBfolder;
 	var outSHPfolder = data.outSHPfolder;
 	var outKMLfolder = data.outKMLfolder;
 	var outZip = data.outZip;
@@ -198,21 +200,21 @@ function executeDownload(response,data) {
 
 		stream.on('data', function(data) {
 
-
+					
 					//callback(users[0]);
 
 							// console.log(totalRecords);
+					
 
+					
+						var max_of_prob = Math.max.apply(Math, data.PROBABILITY);
+				        var min_of_prob = Math.min.apply(Math, data.PROBABILITY);
 
-
-							var max_of_prob = Math.max.apply(Math, data.PROBABILITY);
-							var min_of_prob = Math.min.apply(Math, data.PROBABILITY);
-
-							for (var k=0;k<numberOfDates;k++) {
-
-								var currentProb = data.PROBABILITY[k];
-
-								if (max_of_prob<minProb || min_of_prob>maxProb) {
+						for (var k=0;k<numberOfDates;k++) {
+							
+							var currentProb = data.PROBABILITY[k];
+							
+							if (max_of_prob<minProb || min_of_prob>maxProb) {
 								break;//break from this loop
 							}
 
@@ -222,20 +224,20 @@ function executeDownload(response,data) {
 								//Do Nothing
 							} else {
 
-								totalRecords++;
-
-								var unique_id = data.RES.toString() + "_" +  ("0000"+data.TILEH).slice(-4) + "_" + ("0000"+data.TILEV).slice(-4) + "_" + ("0000"+data.COL).slice(-4) + "_" + ("0000"+data.ROW).slice(-4);		
+							totalRecords++;
+							
+							var unique_id = data.RES.toString() + "_" +  ("0000"+data.TILEH).slice(-4) + "_" + ("0000"+data.TILEV).slice(-4) + "_" + ("0000"+data.COL).slice(-4) + "_" + ("0000"+data.ROW).slice(-4);		
 							//data.UNIQUE_ID.toString()
 							var insertRowCSV = "\n" + unique_id + "," + (data.RES || 0) + "," + (data.TILEH || 0)   + "," + (data.TILEV || 0) + "," + (data.COL || 0) + ","
-							+ (data.ROW || 0)+ "," + (data.LAT || 0.0)+ "," + (data.LON || 0.0) + "," + (data.ISO3 || "NULL") + ","
-							+ (data.PERC_TREE_COVER || 0) + "," + (data.ADM_REGION || 0) + "," + (data.ECO_REGION || 0) + ","
+	                                             + (data.ROW || 0)+ "," + (data.LAT || 0.0)+ "," + (data.LON || 0.0) + "," + (data.ISO3 || "NULL") + ","
+	                                              + (data.PERC_TREE_COVER || 0) + "," + (data.ADM_REGION || 0) + "," + (data.ECO_REGION || 0) + ","
 	                                              + (data.PROBABILITY[k] || 0) + "," +  dateIndexes[startDateIndex+k].toString();//data.DATE
-
-
-
+							
+							
+							
 	                        //Add Row to CSV
-	                        fs.appendFileSync(outFile, insertRowCSV);
-
+		                    fs.appendFileSync(outFile, insertRowCSV);
+		                   
 		                     //console.log(k);
 		                     //console.log(forma[i].PROBABILITY[k]);
 	                    	}//end if
@@ -245,14 +247,14 @@ function executeDownload(response,data) {
 		}) // stream
 
 
-stream.on('end', function() {
-	stream.destroy();
+		stream.on('end', function() {
+					stream.destroy();
 
-	if (totalRecords==0) {
+						if (totalRecords==0) {
 
 
-
-		console.log("found no records");
+						
+					console.log("found no records");
 					//response.send("No data found");
 					var noData = "";
 					var endDate = new Date();
@@ -261,70 +263,68 @@ stream.on('end', function() {
 					// response.send();
 					//callback(false);
 					var responseData = {
-						response: response,
-						email: email,
-						requestType : requestType,
-						downloadLink: "",
-						startDate :startDate,
+											response: response,
+											email: email,
+											requestType : requestType,
+											downloadLink: "",
+											startDate :startDate,
 											//endDate :endDate,
 											callback :callback,
 											totalRecords:0
 
-										}
-										sendResponse(responseData);
-										return;
-									}
-
-									var zipFileName = iso3 + "_" + random + ".zip";
-									var outZipFile = outZip + "\\" + zipFileName;
-
-									var downloadLink = downloadURL+zipFileName;
-									console.log("generating output");
-									console.log("callback " + callback);
-									switch (output) {
-							//HANDLE CSV
-							case "csv":
+											}
+							sendResponse(responseData);
+								return;
+							}
+	
+					var zipFileName = iso3 + "_" + random + ".zip";
+					var outZipFile = outZip + "\\" + zipFileName;
+					
+					var downloadLink = downloadURL+zipFileName;
+					console.log("generating output");
+					console.log("callback " + callback);
+					switch (output) {
+//HANDLE CSV
+						case "csv":
 							console.log("CSV zip start"); 
 
+							var admzip = new AdmZip();
+							admzip.addLocalFile(outFile);	
+							admzip.writeZip(outZipFile);
 							
-
-							var zipCmd = '7z a "' + outZipFile + '" "' + outFile + '"';	
-							exec(zipCmd,function(){
-								var responseData = {
-									response: response,
-									email: email,
-									requestType : requestType,
-									downloadLink: downloadLink,
-									startDate :startDate,
+							var responseData = {
+												response: response,
+												email: email,
+												requestType : requestType,
+												downloadLink: downloadLink,
+												startDate :startDate,
 												//endDate :endDate,
 												callback :callback,
 												totalRecords:totalRecords
 
 											}
-											sendResponse(responseData);
-										})
-							
-							
-							break;
-							//HANDLE GDB
-							case "gdb":
+							sendResponse(responseData);
+							// admzip.destroy();
+						break;
+//HANDLE GDB
+						case "gdb":
 							var gdbFolder = "FORMA_GDB" + random;
 							//var shpFolder = "FORMA_SHP" + random;
 							
-
-							fs.mkdirSync(outFGDBfolder + "\\" + gdbFolder);
+						 	
+						 	fs.mkdirSync(outFGDBfolder + "\\" + gdbFolder);
 
 
 						 	//fs.mkdirSync(outSHPfolder + shpFolder);							
-						 	var exportLine = 'python "' + __dirname + '\\exportgdbfix.py" "' + __dirname + '" "' + outFile +  '" ' + random + ' ' + iso3;	
+							var exportLine = 'python "' + __dirname + '\\exportgdbfix.py" "' + __dirname + '" "' + outFile +  '" ' + random + ' ' + iso3;	
 
-						 	console.log("Python GDB Creation start");
+							console.log("Python GDB Creation start");
 
-
+							
 						 	//execute arcpy to create File Geodatabase
-						 	exec(exportLine,
+						    exec(exportLine,
 
-						 		function (error, stdout, stderr) {
+	                                  function (error, stdout, stderr) {
 	                                    // console.log('stdout: ' + stdout);	
 	                                    // console.log('stderr: ' + stderr);
 
@@ -338,73 +338,68 @@ stream.on('end', function() {
 	                                    console.log("Started At " + startDate.toString());	
 	                                    console.log("Ended At " + endDate.toString());
 	                                    if (error !== null) {
-	                                    	console.log('exec error: ' + error);
+	                                      console.log('exec error: ' + error);
 	                                      //response.send("Error in exporting to File Geodatabase");
 	                                      // response.write(callback + "({\"results\":\"Error in exporting to File Geodatabase\",\"featureCount\":0,\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
 	                                      // response.send();
-	                                  } else {
+	                                    } else {
 	                                    	//zip the files
-	                                    	var zipCmd = '7z a "' + outZipFile + '" "' + filegdbPath + '"';	
-											exec(zipCmd,function(){
-												var responseData = {
-	                                    		email: email,
-	                                    		response: response,
-	                                    		requestType : requestType,
-	                                    		downloadLink: downloadLink,
-	                                    		startDate :startDate,
-												//endDate :endDate,
-												callback :callback,
-												totalRecords:totalRecords
-												}
+
+	                                    	//var zip = new EasyZip();	                                    	
+	                                    	console.log(filegdbPath);
 											
-											sendResponse(responseData);
+											//admzip.addLocalFile(outFile);										
+											// admzip.addLocalFolder(filegdbPath.toString());
+											// admzip.writeZip(outZipFile);
 
-											});			
+											var files   = [];
+											var fileNames   = [];
+											var output = fs.createWriteStream(outZipFile);
+											var archive = archiver('zip');
+											output.on('close', function() {
+											  console.log('archiver has been finalized and the output file descriptor has closed.');
+											});
 
-										}
-	                                });//exec
+											archive.on('error', function(err) {
+											  throw err;
+											});
 
-							break;
-							//HANDLE SHP
-							case "shp":
+											archive.pipe(output);
 
-							var shpFolder = "FORMA_SHP" + random;	
-							var projectionText = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]";					
+											var walker  = walk.walk(filegdbPath.toString(), { followLinks: false });
 
-							console.log("Python SHP Creation start");
+											walker.on('file', function(root, stat, next) {
+											    // Add this file to the list of files
+											    files.push(root + '/' + stat.name);
+											    fileNames.push(stat.name);
+											    next();
+											});
 
-							fs.mkdirSync(outSHPfolder +"\\"+ shpFolder);
-							console.log("Created Projection file");
-							fs.appendFileSync(outSHPfolder +"\\"+ shpFolder+"\\"+ shpFolder +".prj", projectionText);
-							var exportLine = 'python "' + __dirname + '\\exportshp.py" "' + __dirname + '" "'  + outFile +  '" ' + random + ' ' + iso3;
-						 	//execute shapefile python
-						 	exec(exportLine,
-						 		function (error, stdout, stderr) {
-	                                    // console.log('stdout: ' + stdout);
-	                                    // console.log('stderr: ' + stderr);
-	                                   // var filegdb = "FORMA_OUTPUT"+random+".shp"
-	                                   var shpPath = outSHPfolder +"\\"+ shpFolder;
+											walker.on('end', function() {
+												for (var i = 0;i<files.length;i++) {													
+													archive.append(fs.createReadStream(files[i]), { name: gdbFolder +".gdb/"+fileNames[i] })
+												}
 
+												archive.finalize(function(err, bytes) {
+												  if (err) {
+												    throw err;
+												  }
 
-	                                   var endDate = new Date();
-	                                    //console.log("Read ", forma.length + " records from MongoDB");
-	                                    console.log("Saved ", totalRecords + " records");
-	                                    
-	                                    console.log("Started At " + startDate.toString());	
-	                                    console.log("Ended At " + endDate.toString());
-	                                    if (error !== null) {
-	                                    	console.log('exec error: ' + error);
-	                                      //response.send("Error in exporting to Shapefile");
-	                                      // response.write(callback + "({\"results\":\"Error in exporting to Shapefile\",\"featureCount\":0,\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
-	                                      // response.send();
-	                                  } else {
-	                                    	//zip the files                                    
-	                                    	
-	                                    	console.log(shpPath);
+												  console.log(bytes + ' total bytes');
+												  output = null;
+												  archive = null;
+												  walker = null;
+												  // output.destroy();
+												  // archive.destroy();
+												  // walker.destroy();
+												  
+												});
 
-	                                    	var zipCmd = '7z a "' + outZipFile + '" "' + shpPath + '"';	
-											exec(zipCmd,function(){
-												var responseData = {
+												
+
+											});
+
+											var responseData = {
 												email: email,
 												response: response,
 												requestType : requestType,
@@ -417,21 +412,134 @@ stream.on('end', function() {
 											}
 											
 											sendResponse(responseData);
+
 											
 
-											});											
-
-										}
+											
+	                                    	
+	                                    }
 	                                });//exec
 
-							break;
-							//HANDLE KML
-							case "kml":
+						break;
+//HANDLE SHP
+						case "shp":
+							
+							var shpFolder = "FORMA_SHP" + random;	
+							var projectionText = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]";					
+						 	
+						 	console.log("Python SHP Creation start");
 
+						 	fs.mkdirSync(outSHPfolder +"\\"+ shpFolder);
+						 	console.log("Created Projection file");
+						 	fs.appendFileSync(outSHPfolder +"\\"+ shpFolder+"\\"+ shpFolder +".prj", projectionText);
+							var exportLine = 'python "' + __dirname + '\\exportshp.py" "' + __dirname + '" "'  + outFile +  '" ' + random + ' ' + iso3;
+						 	//execute shapefile python
+						    exec(exportLine,
+	                                  function (error, stdout, stderr) {
+	                                    // console.log('stdout: ' + stdout);
+	                                    // console.log('stderr: ' + stderr);
+	                                   // var filegdb = "FORMA_OUTPUT"+random+".shp"
+	                                    var shpPath = outSHPfolder +"\\"+ shpFolder;
+	                                    
+	                                    
+	                                    var endDate = new Date();
+	                                    //console.log("Read ", forma.length + " records from MongoDB");
+	                                    console.log("Saved ", totalRecords + " records");
+	                                    
+	                                    console.log("Started At " + startDate.toString());	
+	                                    console.log("Ended At " + endDate.toString());
+	                                    if (error !== null) {
+	                                      console.log('exec error: ' + error);
+	                                      //response.send("Error in exporting to Shapefile");
+	                                      // response.write(callback + "({\"results\":\"Error in exporting to Shapefile\",\"featureCount\":0,\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
+	                                      // response.send();
+	                                    } else {
+	                                    	//zip the files
+
+	                                    	//var zip = new EasyZip();
+	                                    	
+	                                    	console.log(shpPath);
+
+	                                    	var files   = [];
+											var fileNames   = [];
+											var output = fs.createWriteStream(outZipFile);
+											var archive = archiver('zip');
+											output.on('close', function() {
+											  console.log('archiver has been finalized and the output file descriptor has closed.');
+											});
+
+											archive.on('error', function(err) {
+											  throw err;
+											});
+
+											archive.pipe(output);
+
+											var walker  = walk.walk(shpPath.toString(), { followLinks: false });
+
+											walker.on('file', function(root, stat, next) {
+											    // Add this file to the list of files
+											    files.push(root + '/' + stat.name);
+											    fileNames.push(stat.name);
+											    next();
+											});
+
+											walker.on('end', function() {
+												for (var i = 0;i<files.length;i++) {													
+													archive.append(fs.createReadStream(files[i]), { name: shpFolder + "/" + fileNames[i] })
+												}
+
+												archive.finalize(function(err, bytes) {
+												  if (err) {
+												    throw err;
+												  }
+
+												  console.log(bytes + ' total bytes');
+												  output = null;
+												  archive = null;
+												  walker = null;
+												  // output.destroy();
+												  // archive.destroy();
+												  // walker.destroy();
+												});
+
+												
+
+											});
+
+											
+											//admzip.addLocalFile(outFile);										
+											// admzip.addLocalFolder(shpPath.toString());
+											// admzip.writeZip(outZipFile);
+
+											var responseData = {
+												email: email,
+												response: response,
+												requestType : requestType,
+												downloadLink: downloadLink,
+												startDate :startDate,
+												//endDate :endDate,
+												callback :callback,
+												totalRecords:totalRecords
+
+											}
+											
+											sendResponse(responseData);
+
+											
+
+											
+	                                    	
+	                                    }
+	                                });//exec
+
+						break;
+//HANDLE KML
+						case "kml":
+							var admzip = new AdmZip();
 							var file = outFile;
 							var options = {
-								delimiter: ",",
-								charset: "win1250"
+							    delimiter: ",",
+							    charset: "win1250"
 							};
 							//console.log("kmlFile");
 							//console.log(outKMLfolder);
@@ -449,65 +557,65 @@ stream.on('end', function() {
 
 								rowCount++;
 								//console.log(row);
-								if (err) {
-									return console.log(err);
-								}
+							    if (err) {
+							        return console.log(err);
+							    }
 
-								if (row !== null && row[0]!=undefined) {
-									if (rowCount>1) {
+							    if (row !== null && row[0]!=undefined) {
+							    	if (rowCount>1) {
 							    	//console.log(row[8]);
 							    	//console.log(row[10]);
 
-							    	fs.appendFileSync(kmlFile,"   <Placemark>\n")
-							    	fs.appendFileSync(kmlFile,"       <name>" + row[14] + " - " + row[13] + "%</name>\n")
-							    	fs.appendFileSync(kmlFile,"       <description>" + row[10] + "</description>\n")
-							    	fs.appendFileSync(kmlFile,"       <Point>\n")
-							    	fs.appendFileSync(kmlFile,"           <coordinates>" + row[7] + "," + row[6] + ",0</coordinates>\n")
-							    	fs.appendFileSync(kmlFile,"       </Point>\n")
-							    	fs.appendFileSync(kmlFile,"   </Placemark>\n")
+	    				    		fs.appendFileSync(kmlFile,"   <Placemark>\n")
+								    fs.appendFileSync(kmlFile,"       <name>" + row[14] + " - " + row[13] + "%</name>\n")
+								    fs.appendFileSync(kmlFile,"       <description>" + row[10] + "</description>\n")
+								    fs.appendFileSync(kmlFile,"       <Point>\n")
+								    fs.appendFileSync(kmlFile,"           <coordinates>" + row[7] + "," + row[6] + ",0</coordinates>\n")
+								    fs.appendFileSync(kmlFile,"       </Point>\n")
+								    fs.appendFileSync(kmlFile,"   </Placemark>\n")
 
+							    	}
+							        next();
 							    }
-							    next();
-							}
-							else {
-								fs.appendFileSync(kmlFile, "</Document>\n");
-								fs.appendFileSync(kmlFile, "</kml>\n");
-
-								var zipCmd = '7z a "' + outZipFile + '" "' + kmlFile;	
-								exec(zipCmd,function(){
-									var responseData = {
-										email: email,
-										response: response,
-										requestType : requestType,
-										downloadLink: downloadLink,
-										startDate :startDate,
+							    else {
+							    	fs.appendFileSync(kmlFile, "</Document>\n");
+									fs.appendFileSync(kmlFile, "</kml>\n");
+							    	admzip.addLocalFile(kmlFile);	
+									admzip.writeZip(outZipFile);
+							        var responseData = {
+							        			email: email,
+												response: response,
+												requestType : requestType,
+												downloadLink: downloadLink,
+												startDate :startDate,
 												//endDate :endDate,
 												callback :callback,
 												totalRecords:totalRecords
 
 											}
+							        
+									sendResponse(responseData);
 
-											sendResponse(responseData);
-
-										});									
-								}
+									//admzip = null;
+									// admzip.destroy();
+							    }
 							});
-
-
+							
+							
 						break;
 
-						}
-						stream = null;
+					}
+					stream = null;
 
-						});
-
+					});
+						
 				//}
 			//});
+		
+	
+		console.log("processing");
 
-
-console.log("processing");
-
-
+	
 //}//open handler
 //)//db.open
 
@@ -546,11 +654,11 @@ function sendResponse(responseData) {
 	if (email) {
 		console.log("Sending Email");
 		var smtpTransport = nodemailer.createTransport("SMTP",{
-			service: "Gmail",
-			auth: {
-				user: "blueraster.emailer@gmail.com",
-				pass: "raster2013!"
-			}
+		    service: "Gmail",
+		    auth: {
+		        user: "blueraster.emailer@gmail.com",
+		        pass: "raster2013!"
+		    }
 		});
 
 		var resultsMessage = "Hello " + email +","; 
@@ -563,7 +671,7 @@ function sendResponse(responseData) {
 		
 
 			// setup e-mail data with unicode symbols
-			var mailOptions = {
+		var mailOptions = {
 		    from: "Blue Raster & WRI <aamirsul@gmail.com>", // sender address
 		    to: email, // list of receivers
 		    subject: "FORMA Download", // Subject line
@@ -573,12 +681,12 @@ function sendResponse(responseData) {
 
 		// send mail with defined transport object
 		smtpTransport.sendMail(mailOptions, function(error, response){
-			if(error){
-				console.log(error);
-			}else{
-				console.log("Message sent: " + response.message);
-			}
-			smtpTransport = null;
+		    if(error){
+		        console.log(error);
+		    }else{
+		        console.log("Message sent: " + response.message);
+		    }
+		    smtpTransport = null;
 		    // if you don't want to use this transport object anymore, uncomment following line
 		    //smtpTransport.close(); // shut down the connection pool, no more messages
 		});
