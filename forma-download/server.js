@@ -376,7 +376,7 @@ stream.on('end', function() {
 							fs.mkdirSync(outSHPfolder +"\\"+ shpFolder);
 							console.log("Created Projection file");
 							fs.appendFileSync(outSHPfolder +"\\"+ shpFolder+"\\"+ shpFolder +".prj", projectionText);
-							var exportLine = 'python "' + __dirname + '\\exportshp.py" "' + __dirname + '" "'  + outFile +  '" ' + random + ' ' + iso3;
+							var exportLine = 'python "' + __dirname + '\\exportshpfix.py" "' + __dirname + '" "'  + outFile +  '" ' + random + ' ' + iso3;
 						 	//execute shapefile python
 						 	exec(exportLine,
 						 		function (error, stdout, stderr) {

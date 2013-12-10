@@ -58,8 +58,10 @@ with open(inputCSV, 'rU') as csvfile:
         if i>0:
             xy = (float(row[7]), float(row[6]))                      
             k = 0
-            cursor.insertRow([xy,row[0],int(row[1]),int(row[2]),int(row[3]),int(row[4]),int(row[5]),float(row[6]),float(row[7]),row[8],int(row[9]),int(row[10]),int(row[11]),int(row[12]),row[13]])           
-
+            try:
+                cursor.insertRow([xy,row[0],int(row[1]),int(row[2]),int(row[3]),int(row[4]),int(row[5]),float(row[6]),float(row[7]),row[8],int(row[9]),int(row[10]),int(row[11]),int(row[12]),row[13]])           
+            except:
+                break
         i = i + 1
         #print i   
 
