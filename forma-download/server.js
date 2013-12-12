@@ -67,7 +67,7 @@ for (var index in json) {
     	var output = query["output"].toString();
     	var email = query["email"];
 
-    	var random = Math.random()*100000000000000000;	
+    	var random = Math.floor((Math.random()*100000000000000)+1);	
 
 
 
@@ -261,6 +261,9 @@ stream.on('end', function() {
 					// response.send();
 					//callback(false);
 					var responseData = {
+						format:"CSV",
+						iso3:iso3,
+						random:random,
 						response: response,
 						email: email,
 						requestType : requestType,
@@ -291,6 +294,9 @@ stream.on('end', function() {
 							var zipCmd = '7z a "' + outZipFile + '" "' + outFile + '"';	
 							exec(zipCmd,function(){
 								var responseData = {
+									format:"CSV",
+									iso3:iso3,
+									random:random,
 									response: response,
 									email: email,
 									requestType : requestType,
@@ -347,6 +353,9 @@ stream.on('end', function() {
 	                                    	var zipCmd = '7z a "' + outZipFile + '" "' + filegdbPath + '"';	
 											exec(zipCmd,function(){
 												var responseData = {
+												format:"GDB",
+												iso3:iso3,
+												random:random,
 	                                    		email: email,
 	                                    		response: response,
 	                                    		requestType : requestType,
@@ -405,6 +414,9 @@ stream.on('end', function() {
 	                                    	var zipCmd = '7z a "' + outZipFile + '" "' + shpPath + '"';	
 											exec(zipCmd,function(){
 												var responseData = {
+												format:"SHP",
+												iso3:iso3,
+												random:random,
 												email: email,
 												response: response,
 												requestType : requestType,
@@ -476,6 +488,9 @@ stream.on('end', function() {
 								var zipCmd = '7z a "' + outZipFile + '" "' + kmlFile;	
 								exec(zipCmd,function(){
 									var responseData = {
+										format:"KML",
+										iso3:iso3,
+										random:random,
 										email: email,
 										response: response,
 										requestType : requestType,
@@ -517,6 +532,9 @@ console.log("processing");
 
 
 function sendResponse(responseData) {
+	var format = responseData.format;
+	var iso3 = responseData.iso3;
+	var random = responseData.random;
 	var response = responseData.response;
 	var requestType = responseData.requestType;
 	var downloadLink = responseData.downloadLink;
@@ -528,20 +546,9 @@ function sendResponse(responseData) {
 	var totalRecords = responseData.totalRecords;
 
 	var endDate = new Date();
-	//console.log(responseData);
 
-	// console.log("sending response");
-	// switch (requestType) {
-	// case "json":
-	// 	response.writeHead(200, {"Content-Type": "application/json"});
-	// 	//response.send("Click to Download <a href = '"+downloadLink+"'>"+downloadLink+"</a> ");
-	// 	response.write(callback + "({\"results\":\""+downloadLink+"\",\"featureCount\":"+totalRecords+",\"startTime\":\""+startDate.toString()+"\",\"endTime\":\""+endDate.toString()+"\"})");
-	// 	response.send();	
-	// break;
-	// case "html":
-	// 	response.send("Click to Download <a href = '"+downloadLink+"'>"+downloadLink+"</a> ");
-	// break;
-	// }	
+	
+
 
 	if (email) {
 		console.log("Sending Email");
@@ -557,6 +564,31 @@ function sendResponse(responseData) {
 		
 		if (totalRecords>0) {
 			resultsMessage += " The requested data is available for 48 hours and can be downloaded from here : " + downloadLink; // plaintext body	
+			// delete CSV and Unzipped Data
+			console.log(outCSVFolder);
+			console.log('Deleting format: '+ format + ' , random:' +random);
+			console.log("Deleting these redisual files :");
+			var deleteResultCSV = findRemoveSync(outCSVFolder, {files: 'forma_'+iso3+'_'+random+'.csv', ignore: '.gitignore'});	
+			console.log(deleteResultCSV);
+
+			switch (format) {
+				case "GDB":
+					var deleteResult = findRemoveSync(outFGDBfolder + "//FORMA_GDB"+random, {age: {seconds: 0}, files: '*.*', ignore: '.gitignore'});
+					console.log(deleteResult);
+				break;
+
+				case "SHP":
+					var deleteResult = findRemoveSync(outSHPfolder + "//FORMA_SHP"+random, {age: {seconds: 0}, files: '*.*', ignore: '.gitignore'});
+					console.log(deleteResult);
+				break;
+
+				case "KML":
+					var deleteResult = findRemoveSync(outKMLfolder, {age: {seconds: 0}, files: 'FORMA_OUTPUT'+random+'.kml', ignore: '.gitignore'});	
+					console.log(deleteResult);
+				break;
+			}
+			
+			
 		} else {
 			resultsMessage += " No data was found that matched your request."
 		}

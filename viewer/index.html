@@ -84,7 +84,7 @@
             <div class="formSteps">2. Choose probability range </div>
             <div class="container" id="probContainer"><div id="probSlider"></div></div>
 
-            <div class="formSteps">3. Select Country then States/Provinces (up to 5) - using the dropdowns or map.</div>
+            <div class="formSteps">3. Select Country then States/Provinces (up to 3) - using the dropdowns or map.</div>
 
             <div class="container" id="selectSection"></div>
               
@@ -98,7 +98,7 @@
                   <div id="stateSelect"></div>
 
                   <div id="selectedStates" data-bind="foreach:currentRegionsGraphics()">
-                    <span data-bind="css:{selectedRegionTagInactive: ($index()>=5),selectedRegionTag: ($index()<5)}">
+                    <span data-bind="css:{selectedRegionTagInactive: ($index()>=3),selectedRegionTag: ($index()<3)}">
                     <span data-bind="html:attributes.NAME_1,event:{mouseover:$parent.mouseOverRegion,mouseout:$parent.mouseOutRegion}"></span>
                     <span class="tagRemove" data-bind="click:$parent.selectedRegionClick">X</span>                                      
                     </span>

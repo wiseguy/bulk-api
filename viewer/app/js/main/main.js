@@ -852,11 +852,11 @@ getDownloadLink: function (value) {
                 //dojo.byId("resultsMessage").innerHTML = "";    
                 dojo.removeClass(dojo.byId("downloadImg"),"dijitHidden");
                 console.log("download link");
-
+                var maxRegionsAllowed = config.maxRegionsAllowed;
                 var _self = this;
                 var id1_where = [];
                 array.forEach(_self.RegionLayer.graphics,function(g,i){
-                    if (i<5){
+                    if (i<maxRegionsAllowed){
                         id1_where.push(g.attributes[config.gadm.idForADM2])    
                     }
                     

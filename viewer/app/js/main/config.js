@@ -18,6 +18,7 @@ define({
                 outFields:["NAME_0","ID_0","ISO3"],
                 idfield:"ISO3"},
     formaPoints: {url:"http://gis-stage.wri.org/arcgis/rest/services/FORMA/forma50_2005_2013/MapServer",options:{opacity:0.7}},           
+    maxRegionsAllowed:3,
     //dates:["01/16/2005","01/31/2005","02/15/2005","02/28/2005","03/15/2005","03/31/2005"],
     probabilities:{"min":20,"max":100},
     downloads:[/*{name:"SHP",id:"SHP"},*/{name:'File Geodatabase',id:"GDB"},{name:"Shapefile",id:"SHP"},{name:"KML",id:"KML"},{name:"CSV",id:"CSV"}],
