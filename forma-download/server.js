@@ -573,12 +573,12 @@ function sendResponse(responseData) {
 
 			switch (format) {
 				case "GDB":
-					var deleteResult = findRemoveSync(outFGDBfolder + "//FORMA_GDB"+random, {age: {seconds: 0}, files: '*.*', ignore: '.gitignore'});
+					var deleteResult = findRemoveSync(outFGDBfolder + "//FORMA_GDB"+random);
 					console.log(deleteResult);
 				break;
 
 				case "SHP":
-					var deleteResult = findRemoveSync(outSHPfolder + "//FORMA_SHP"+random, {age: {seconds: 0}, files: '*.*', ignore: '.gitignore'});
+					var deleteResult = findRemoveSync(outSHPfolder + "//FORMA_SHP"+random);
 					console.log(deleteResult);
 				break;
 
