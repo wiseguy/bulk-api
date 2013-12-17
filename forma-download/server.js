@@ -124,7 +124,8 @@ db.collection("forma",function(error, coll){
 })//db.collection
 
 function removeOldData() {
-	
+	try
+  	{
 	var result1 = findRemoveSync(outCSVFolder, {age: {seconds: 172800}, files: '*.*', ignore: '.gitignore'});	
 	var result2 = findRemoveSync(outFGDBfolder, {age: {seconds: 172800}, files: '*.*', ignore: '.gitignore'});
 	var result3 = findRemoveSync(outSHPfolder, {age: {seconds: 172800}, files: '*.*', ignore: '.gitignore'});
@@ -136,6 +137,11 @@ function removeOldData() {
 	console.log(result3);
 	console.log(result4);
 	console.log(result5);
+	}
+	catch(err){			
+		console.log("Error Caught!");
+		console.log(err.message);
+	}
 }
 
 function executeDownload(response,data) {
@@ -568,6 +574,9 @@ function sendResponse(responseData) {
 			console.log(outCSVFolder);
 			console.log('Deleting format: '+ format + ' , random:' +random);
 			console.log("Deleting these redisual files :");
+
+			try {
+
 			var deleteResultCSV = findRemoveSync(outCSVFolder, {files: 'forma_'+iso3+'_'+random+'.csv', ignore: '.gitignore'});	
 			console.log(deleteResultCSV);
 
@@ -586,6 +595,14 @@ function sendResponse(responseData) {
 					var deleteResult = findRemoveSync(outKMLfolder, {age: {seconds: 0}, files: 'FORMA_OUTPUT'+random+'.kml', ignore: '.gitignore'});	
 					console.log(deleteResult);
 				break;
+			}
+				}
+			
+			catch(err)
+
+			{			
+				console.log("Error Caught!");
+				console.log(err.message);
 			}
 			
 			
