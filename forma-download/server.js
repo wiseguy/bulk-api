@@ -3,8 +3,9 @@ var portApp = 8080;//8080,process.env.PORT;
 var downloadURL = "http://alb/formaDownloads/";
 //var downloadURL = "http://gis-stage.wri.org/formaDownloads/";
 var host = "127.0.0.1";//for mongodb
-var dbName = "forma20131024";
-var datesFile = __dirname+"\\datesIndex_2013-10-24.csv";
+var dateOfData = "2013-12-11";
+var dbName = "forma"+dateOfData;
+var datesFile = __dirname+"\\datesIndex_"+dateOfData+".csv";
 
 var findRemoveSync = require('find-remove');
 var fs = require("fs");
@@ -61,6 +62,8 @@ for (var index in json) {
     	var regions = eval(query["regions"]) || [];
     	var minProb = parseInt(query["minProb"]);
     	var maxProb = parseInt(query["maxProb"]);
+    	var thresholdProb = parseInt(query["thresholdProb"]);
+    	var limit = parseInt(query["limit"]);
     	var startDateIndex = parseInt(query["startDateIndex"]);
     	var numberOfDates = parseInt(query["dateCount"]);
     	var requestType = query["f"].toString();
@@ -84,6 +87,8 @@ for (var index in json) {
     		regions:regions,
     		minProb:minProb,
     		maxProb:maxProb,
+    		thresholdProb:thresholdProb,
+    		limit:limit,
     		startDateIndex:startDateIndex,
     		numberOfDates:numberOfDates,
     		requestType:requestType,
@@ -151,6 +156,9 @@ function executeDownload(response,data) {
 	var regions = data.regions;
 	var minProb = data.minProb;
 	var maxProb = data.maxProb;
+	var thresholdProb = data.thresholdProb;	
+	var limit = data.limit;
+	var limit = data.limit;	
 	var startDateIndex = data.startDateIndex;
 	var numberOfDates = data.numberOfDates;
 	var requestType = data.requestType;
@@ -180,6 +188,8 @@ function executeDownload(response,data) {
 		console.log("regions count : " + regions.length);
 		console.log("minProb : " + minProb);
 		console.log("maxProb : " + maxProb);
+		console.log("thresholdProb : " + thresholdProb);
+		console.log("limit : " + limit);
 		console.log("startDateIndex : " + startDateIndex);
 		console.log("numberOfDates : " + numberOfDates);
 		console.log("requestType : " + requestType);
@@ -188,16 +198,16 @@ function executeDownload(response,data) {
 		var queryObj = {"PROBABILITY":{$gte:minProb,$lte:maxProb}};
 		//console.log(regions.length);
 		
-		if (iso3) { // iso3 revceied use it
+		if (iso3.toUpperCase() != "ALL") { // iso3 revceied use it
 			queryObj["ISO3"]= iso3;
-		}
+		} 
 		if (regions.length>0) {// if regions revceived use it
 			queryObj["ADM_REGION"]={$in: regions};
 		}
-		//console.log(queryObj);
-		var stream = collection.find(queryObj,{"PROBABILITY":{$slice:[startDateIndex,numberOfDates]}}).stream();
+		console.log(queryObj);
+		var stream = collection.find(queryObj,{"PROBABILITY":{$slice:[startDateIndex,numberOfDates]}}).limit(limit || 0).stream();
 
-		var csvColumns = "UNIQUE_ID,RES,TILEH,TILEV,COL,ROW,LAT,LON,ISO3,PERC_TREE_COVER,ADM_REGION,ECO_REGION,PROBABILITY,DATE";
+		var csvColumns = "UNIQUE_ID,RES,TILEH,TILEV,COL,ROW,LAT,LON,ISO3,PERC_TREE_COVER,ADM_REGION,ECO_REGION,PROBABILITY,DATE_INDEX,DATE";
 		fs.appendFileSync(outFile, csvColumns);
 
 		var totalRecords = 0;
@@ -207,27 +217,39 @@ function executeDownload(response,data) {
 
 					//callback(users[0]);
 
-							// console.log(totalRecords);
+							 
 
 
 
 							var max_of_prob = Math.max.apply(Math, data.PROBABILITY);
 							var min_of_prob = Math.min.apply(Math, data.PROBABILITY);
+							/*console.log(max_of_prob);
+							console.log(min_of_prob);
+							console.log(data.ISO3);*/
+							var foundThreshold = false;
 
 							for (var k=0;k<numberOfDates;k++) {
+								
+								if (thresholdProb && foundThreshold) {
+									break;
+								}
 
 								var currentProb = data.PROBABILITY[k];
 
 								if (max_of_prob<minProb || min_of_prob>maxProb) {
-								break;//break from this loop
-							}
+
+									break;//break from this loop
+								}
 
 
 							if (currentProb<minProb || currentProb>maxProb) {
 								//console.log(currentProb);
 								//Do Nothing
+								if ((thresholdProb && currentProb>=thresholdProb)) {
+									console.log("Probability is too less " + currentProb);
+								}
 							} else {
-
+								console.log("add record");
 								totalRecords++;
 
 								var unique_id = data.RES.toString() + "_" +  ("0000"+data.TILEH).slice(-4) + "_" + ("0000"+data.TILEV).slice(-4) + "_" + ("0000"+data.COL).slice(-4) + "_" + ("0000"+data.ROW).slice(-4);		
@@ -235,13 +257,16 @@ function executeDownload(response,data) {
 							var insertRowCSV = "\n" + unique_id + "," + (data.RES || 0) + "," + (data.TILEH || 0)   + "," + (data.TILEV || 0) + "," + (data.COL || 0) + ","
 							+ (data.ROW || 0)+ "," + (data.LAT || 0.0)+ "," + (data.LON || 0.0) + "," + (data.ISO3 || "NULL") + ","
 							+ (data.PERC_TREE_COVER || 0) + "," + (data.ADM_REGION || 0) + "," + (data.ECO_REGION || 0) + ","
-	                                              + (data.PROBABILITY[k] || 0) + "," +  dateIndexes[startDateIndex+k].toString();//data.DATE
+	                                              + (data.PROBABILITY[k] || 0) + "," +  parseInt(startDateIndex+k) + "," + dateIndexes[startDateIndex+k].toString();//data.DATE
 
-
+	                        //console.log("Saved Prob " + currentProb + " for " + unique_id);
 
 	                        //Add Row to CSV
 	                        fs.appendFileSync(outFile, insertRowCSV);
-
+	                        if (thresholdProb && currentProb>=thresholdProb) {
+	                        	foundThreshold = true;
+	                        }
+	                        
 		                     //console.log(k);
 		                     //console.log(forma[i].PROBABILITY[k]);
 	                    	}//end if
@@ -337,8 +362,8 @@ stream.on('end', function() {
 						 	exec(exportLine,
 
 						 		function (error, stdout, stderr) {
-	                                    // console.log('stdout: ' + stdout);	
-	                                    // console.log('stderr: ' + stderr);
+	                                     console.log('stdout: ' + stdout);	
+	                                     console.log('stderr: ' + stderr);
 
 	                                    //var filegdb = "FORMA_OUTPUT"+random+".gdb"
 	                                    var filegdbPath = outFGDBfolder + "\\" + gdbFolder;	                                    
@@ -477,7 +502,7 @@ stream.on('end', function() {
 							    	//console.log(row[10]);
 
 							    	fs.appendFileSync(kmlFile,"   <Placemark>\n")
-							    	fs.appendFileSync(kmlFile,"       <name>" + row[14] + " - " + row[13] + "%</name>\n")
+							    	fs.appendFileSync(kmlFile,"       <name>" + row[14] + " - " + row[12] + "%</name>\n")
 							    	fs.appendFileSync(kmlFile,"       <description>" + row[10] + "</description>\n")
 							    	fs.appendFileSync(kmlFile,"       <Point>\n")
 							    	fs.appendFileSync(kmlFile,"           <coordinates>" + row[7] + "," + row[6] + ",0</coordinates>\n")
@@ -596,6 +621,7 @@ function sendResponse(responseData) {
 					console.log(deleteResult);
 				break;
 			}
+			
 				}
 			
 			catch(err)

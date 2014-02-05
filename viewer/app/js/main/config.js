@@ -1,4 +1,5 @@
-define({
+define({    
+    //ec2-54-227-204-123.compute-1.amazonaws.com
     basemap:"http://services.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer",
     basemapReference:"http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer",
     mapservice:{url:"http://gis-stage.wri.org/arcgis/rest/services/FORMA/GADM/MapServer/",options:{opacity:0.4}},

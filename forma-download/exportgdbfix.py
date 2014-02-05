@@ -34,12 +34,12 @@ arcpy.AddField_management(fcName, "ECO_REGION", "LONG", 10, "", "", "ECO_REGION"
 #arcpy.AddField_management(fcName, "MATT_HANSEN_DEFOR", "SHORT", 10, "", "", "MATT_HANSEN_DEFOR", "NULLABLE", "REQUIRED")
 arcpy.AddField_management(fcName, "PROBABILITY", "SHORT", 10, "", "", "PROBABILITY", "NULLABLE", "REQUIRED")
 arcpy.AddField_management(fcName, "DATE_RECORDED", "DATE", 20, "", "", "DATE_RECORDED", "NULLABLE", "REQUIRED")
-#arcpy.AddField_management(fcName, "DATE_INDEX", "SHORT", 5, "", "", "DATE_INDEX", "NULLABLE", "REQUIRED")
+arcpy.AddField_management(fcName, "DATE_INDEX", "SHORT", 5, "", "", "DATE_INDEX", "NULLABLE", "REQUIRED")
 
 # fc is a point feature class
 
 fc = out_path + "/" + fgdbName + "/" + fcName
-cursor = arcpy.da.InsertCursor(fc, ["SHAPE@XY","UNIQUE_ID","RES","TILEH","TILEV","TILEV","ROW","LAT","LON","ISO3","PERC_TREE_COVER","ADM_REGION","ECO_REGION","PROBABILITY","DATE_RECORDED"])
+cursor = arcpy.da.InsertCursor(fc, ["SHAPE@XY","UNIQUE_ID","RES","TILEH","TILEV","TILEV","ROW","LAT","LON","ISO3","PERC_TREE_COVER","ADM_REGION","ECO_REGION","PROBABILITY","DATE_RECORDED","DATE_INDEX"])
 
 
 
@@ -59,7 +59,7 @@ with open(inputCSV, 'rU') as csvfile:
             xy = (float(row[7]), float(row[6]))                      
             k = 0
             try:
-                cursor.insertRow([xy,row[0],int(row[1]),int(row[2]),int(row[3]),int(row[4]),int(row[5]),float(row[6]),float(row[7]),row[8],int(row[9]),int(row[10]),int(row[11]),int(row[12]),row[13]])           
+                cursor.insertRow([xy,row[0],int(row[1]),int(row[2]),int(row[3]),int(row[4]),int(row[5]),float(row[6]),float(row[7]),row[8],int(row[9]),int(row[10]),int(row[11]),int(row[12]),row[14],int(row[13])])           
             except:
                 break
         i = i + 1

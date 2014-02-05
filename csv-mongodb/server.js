@@ -5,7 +5,8 @@ var exec = require('child_process').exec;
 var csv2json = require("csv-to-json");
 
 //CSV File Path or CSV String or Readable Stream Object
-var dateOfData = "2013-10-24";
+var dateOfData = "2013-12-11";
+
 
 
 var host = "127.0.0.1";
@@ -34,10 +35,11 @@ var filePaths = [];
 
 //console.log(filePaths[0]);
 var countries = [];
-var fileCount = 600;
+var fileCount = 120;
 var countriesCounter  = {};
 var bigData = 200000;
-var minProbability = 20;
+var minProbability = 50;
+var countriesAllowed = []; //empty for all
 
 
 //var countries  = [];
@@ -79,6 +81,7 @@ db.open(function(error){
 
 
 function parseCSV (file,startDate){
+    
      CSV.parse(file, options, function (err, row, next) {
 
                     if (err) {
@@ -106,7 +109,8 @@ function parseCSV (file,startDate){
                         
                         
                         
-                        if (max_of_array>=minProbability) {
+                        if (max_of_array>=minProbability && (countriesAllowed.length==0 || countriesAllowed.indexOf(row[7])>-1)) {
+                            console.log(row[7]);    
                             //console.log(arrayProb);
                             //console.log(max_of_array);
                             //console.log(min_of_array);
@@ -217,7 +221,7 @@ function parseCSV (file,startDate){
                         //     }
 
                             
-                            console.log("Exporting All Countries to GDB");
+                         /*   console.log("Exporting All Countries to GDB");
                             exec('python convertCSV2FGDB.py',
                                   function (error, stdout, stderr) {
                                     console.log('stdout: ' + stdout);
@@ -225,7 +229,7 @@ function parseCSV (file,startDate){
                                     if (error !== null) {
                                       console.log('exec error: ' + error);
                                     }
-                                });
+                                });*/
                             
                            
 
