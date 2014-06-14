@@ -1,0 +1,10 @@
+{
+    "name": "1-CSV-to-MongoDB",
+    "description": "Loads the CSV files to MongoDB",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "a-csv": "0.1.8",
+        "mongodb": "1.3.18"
+    }
+}

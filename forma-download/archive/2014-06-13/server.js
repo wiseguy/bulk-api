@@ -3,9 +3,9 @@ var portApp = 8080;//8080,process.env.PORT;
 var downloadURL = "http://alb/formaDownloads/";
 //var downloadURL = "http://gis-stage.wri.org/formaDownloads/";
 var host = "127.0.0.1";//for mongodb
-//var dateOfData = "2014-02-11";
-var dbName = "forma";
-var datesFile = __dirname+"\\datesIndexAll.csv";
+var dateOfData = "2014-02-11";
+var dbName = "forma"+dateOfData;
+var datesFile = __dirname+"\\datesIndex_"+dateOfData+".csv";
 
 var findRemoveSync = require('find-remove');
 var fs = require("fs");

@@ -35,8 +35,3 @@ http://alb:8080/forma-download/api?minProb=0&maxProb=100&startDateIndex=0&dateCo
 http://alb:8080/forma-download/api?country=IDN&thresholdProb=50&minProb=0&maxProb=100&startDateIndex=0&dateCount=182&f=json&output=CSV&regions=[]&email=aamirsul@gmail.com // thresholdProb will get the date at this threshold was reached
 
 http://alb.blueraster.com:8080/forma-download/api?limit=0&country=ALL&thresholdProb=50&minProb=50&maxProb=100&startDateIndex=0&dateCount=186&f=json&output=GDB&regions=[]&email=aamirsul@gmail.com&callback=test
-
-http://localhost:8080/forma-download/api?limit=0&country=ALL&thresholdProb=50&minProb=50&maxProb=100&startDateIndex=0&dateCount=194&f=json&output=GDB&regions=[]&email=aamirsul@gmail.com&callback=test
-
-//added fanout - only for gdb for now
-http://localhost:8080/forma-download/api?limit=0&country=ALL&fanout=true&thresholdProb=50&minProb=50&maxProb=100&startDateIndex=0&dateCount=194&f=json&output=GDB&regions=[]&email=aamirsul@gmail.com&callback=test

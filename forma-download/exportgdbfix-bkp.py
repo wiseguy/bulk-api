@@ -7,9 +7,9 @@ inputCSV = sys.argv[2]
 random = sys.argv[3]
 iso3 = sys.argv[4]
 
-gdbFolder = "FORMA_GDB_" + iso3 + "_" + random;
+gdbFolder = "FORMA_GDB" + random;
 out_path = workingDir + "//outputFGDB//" + gdbFolder
-fgdbName = "FORMA_OUTPUT_" + iso3 + "_" +random+".gdb"
+fgdbName = "FORMA_OUTPUT"+random+".gdb"
 fcName = iso3
 #csvToRead = "d:/temp/forma_temp/formaAll_2013-10-24_600.csv"
 

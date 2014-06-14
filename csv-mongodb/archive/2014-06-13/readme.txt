@@ -1,0 +1,18 @@
+use formaAll
+db.forma.count()
+db.forma.remove()
+
+db.dropDatabase()
+
+db.forma.ensureIndex({ISO3:1})
+db.forma.ensureIndex({ADM_REGION:1})
+db.forma.ensureIndex({PROBABILITY:1})
+db.forma.ensureIndex({ISO3:1,ADM_REGION:1,PROBABILITY:1})
+
+db.forma.count({"PROBABILITY":{$gte:55,$lte:100},"ISO3":"ARG"},{"PROBABILITY":{$slice:[14,10]}})
+
+Export to CSV 
+
+mongoexport --db formaData --collection forma --fields RES,TITLEH,TILEV,COL,ROW,LAT,LON,ISO3,PERC_TREE_COVER,ADM_REGION,ECO_REGION,MATT_HANSEN_DEFOR --csv --out "c:\temp\formaData.csv"
+
+
